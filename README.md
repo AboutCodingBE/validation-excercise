@@ -22,7 +22,7 @@ to also schedule a task to install this configuration.
 
 You have to realise that these sensors have 4G connections. They can have temporarily 
 bad connections and so tasks can be scheduled for firmware updates for a while. Before you schedule a new task, check 
-if there isn’t one already. If there is one and if it is older than 2 hours, you can reschedule. 
+if there isn’t one already. If there is one and it is older than 2 hours, you can reschedule. 
 
 The manufacturer of the sensors has an API which you can use to get information about the sensors and any ongoing tasks. So
 you need to use his API to get the job done. 
