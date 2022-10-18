@@ -2,7 +2,7 @@
 
 ## Outline
 
-You are part of an IoT company shipping sensors to a vast amount of clients. Thes sensors have a firmware from their 
+You are part of an IoT company shipping sensors to a vast amount of clients. These sensors have a firmware from their 
 original manufacturer, which is pretty trustworthy. Your company, meaning you actually, you have to configure these 
 sensors so that they send valuable information which is of interest to your vast amount of clients.
 
@@ -22,13 +22,13 @@ to also schedule a task to install this configuration.
 
 You have to realise that these sensors have 4G connections. They can have temporarily 
 bad connections and so tasks can be scheduled for firmware updates for a while. Before you schedule a new task, check 
-if there isn’t one already. If there is one and it is older than 2 hours, you can reschedule. 
+if there isn’t one already. If there is one and if it is older than 2 hours, you can reschedule. 
 
 The manufacturer of the sensors has an API which you can use to get information about the sensors and any ongoing tasks. So
 you need to use his API to get the job done. 
 
 Endpoint to get device status:
-GET # www.mysensor.io/api/devices/{id}
+GET # www.mysensor.io/api/sensors/{id}
 
 Endpoint to get a specific task: 
 GET # www.mysensor.io/api/tasks/{id}
@@ -48,4 +48,4 @@ DELETE # www.mysensor.io/api/tasks/{id}
 * There is a time cost to updating the firmware: This can easily take up to an hour. So if the firmware isn't the latest firmware, but is compatible with the configuration, you don't have to schedule an update.
 * The application checks for every sensor if the firmware version is compatible with the latest configuration. The firmware version always looks has the following structure: FW:DD-MM-YYYY#XX. So it is basically the letters FW, a colon, then the date of the firmware starting with day, then month,
 then year. There is '#'in between and then follows a number of 2 digits. Because the firmware can get many updates over a day. The firmware is compatible starting from version 
-FW:07-10-2022:03. The 
+FW:23-09-2022:03.
