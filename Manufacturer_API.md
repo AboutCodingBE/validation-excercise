@@ -100,3 +100,19 @@ API endpoint to create a task for a specific sensor.
 
 #### DELETE # www.mysensor.io/api/tasks/{id}
 
+## Files
+
+#### GET # www.mysensor.io/api/files/{id}
+
+API endpoint to get information about a specific file
+
+```json
+{
+  "id": "63635d4a-36d3-4472-ac6b-16205f9c1f6d",
+  "name": "some-name.cfg",
+  "type": "configuration",
+  "description": "temperature measures every 60 seconds",
+  "created_at": "2022-09-25 15:06:48"
+}
+```
+
