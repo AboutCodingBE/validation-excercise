@@ -50,6 +50,7 @@ DELETE # www.mysensor.io/api/tasks/{id}
 * The application returns the latest update of the status of the list of sensors. So it shows which sensors are ok and which are not ok and why they are not ok. How this is returned is up to you: it can be a rest api, a webservice, it doesn't matter. 
 * A sensor is ok if the firmware is compatible with the latest configuration and if the latest configuration has been installed. 
 * There is a time cost to updating the firmware: This can easily take up to an hour. So if the firmware isn't the latest firmware, but is compatible with the configuration, you don't have to schedule an update.
+* Check for tasks that have been running for more than 2 hours. These need to be cancelled.
 * The application checks for every sensor if the firmware version is compatible with the latest configuration. The firmware version always looks has the following structure: FW:DD-MM-YYYY#XX. So it is basically the letters FW, a colon, then the date of the firmware starting with day, then month,
 then year. There is '#'in between and then follows a number of 2 digits. Because the firmware can get many updates over a day. The firmware is compatible starting from version 
 FW:23-09-2022:03.
