@@ -30,8 +30,12 @@ you need to use his API to get the job done.
 Endpoint to get device status:
 GET # www.mysensor.io/api/sensors/{id}
 
+Endpoint to get tasks by sensor:
+GET # www.mysensor.io/api/sensors/{id}/tasks
+
 Endpoint to get a specific task: 
 GET # www.mysensor.io/api/tasks/{id}
+
 
 Endpoint to add a new task: 
 POST # www.mysensor.io/api/tasks
