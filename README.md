@@ -27,7 +27,7 @@ if there isn’t one already. If there is one and if it is older than 2 hours, y
 The manufacturer of the sensors has an API which you can use to get information about the sensors and any ongoing tasks. So
 you need to use his API to get the job done. 
 
-Endpoint to get device status:
+Endpoint to get sensor status:
 GET # www.mysensor.io/api/sensors/{id}
 
 Endpoint to get tasks by sensor:
