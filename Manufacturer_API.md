@@ -148,7 +148,7 @@ API endpoint to create a task for a specific sensor.
 
 #### GET # www.mysensor.io/api/files/{id}
 
-API endpoint to get information about a specific file
+API endpoint to get information about a specific file. The response looks like this:
 
 ```json
 {
