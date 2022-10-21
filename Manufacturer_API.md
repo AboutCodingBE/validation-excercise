@@ -13,6 +13,7 @@ API endpoint to get information about a single sensor. The response looks like t
 ```json
 {
   "serial": 123456789098789,
+  "type": "TS50X",
   "status_id": 1,
   "current_configuration": "some_oonfiguration.cfg",
   "current_firmware": "FW:23-09-2022:03",

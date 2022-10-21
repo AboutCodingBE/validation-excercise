@@ -3,18 +3,19 @@
 ## Outline
 
 You are part of an IoT company shipping sensors to a vast amount of clients. These sensors, which are of type TS50X,
-have a firmware from their original manufacturer, which is pretty trustworthy. Your company, meaning you actually, you
-have to configure these sensors so that they send valuable information which is of interest to your vast amount of
-clients.
+have a firmware from their original manufacturer, which is pretty trustworthy. You have to configure these sensors so 
+that they send valuable information which is of interest to your vast amount of clients.
 
-While testing the sensors with the latest configuration, we noticed a compatibility problem with older firmware. There
-are new features which can be configured but some older firmware doesn't know how to deal with those new features. So
+While testing the sensors with the latest configuration, people noticed a compatibility problem with older firmware. There
+are new features which can be configured, but some older firmware doesn't know how to deal with those new features. So
 the sensors only do a part of what they should be doing. We can’t have that, our company stands for high quality and
 happy customers.
 
 **Here is the challenge**: You need to write some software to validate all the sensors of an incoming shipment. The
 application takes a list of sensor id's and shows which sensors are ok and which are not ok. The application also shows
-what is not ok if the sensor is not ready to be shipped.
+what is not ok if the sensor is not ready to be shipped. So if for a particular sensor the firmware is not ok, the 
+application should say that the firmware is not ok. If the sensor had incompatible firmware and the latest configuration
+not installed, the application should indicate this until the firmware and the configuration have been installed.
 
 The application needs to verify if these sensors have a firmware version compatible with the latest configuration
 options. If the firmware is not compatible, you need to schedule a task to install the latest firmware over the
@@ -25,30 +26,16 @@ You have to realise that these sensors have 4G connections. They can have tempor
 be scheduled for firmware updates for a while. Before you schedule a new task, check if there isn’t one already. If
 there is one and if it is older than 2 hours, you can reschedule.
 
-The manufacturer of the sensors has an API which you can use to get information about the sensors and any ongoing tasks.
+The manufacturer of the sensors has [an API](Manufacturer_API.md) which you can use to get information about the sensors and any ongoing tasks.
 So you need to use his API to get the job done.
 
-Endpoint to get sensor status:
-GET # www.mysensor.io/api/sensors/{id}
-
-Endpoint to get tasks by sensor:
-GET # www.mysensor.io/api/sensors/{id}/tasks
-
-Endpoint to get a specific task:
-GET # www.mysensor.io/api/tasks/{id}
-
-Endpoint to add a new task:
-POST # www.mysensor.io/api/tasks
-
-Endpoint to delete/stop a task:
-DELETE # www.mysensor.io/api/tasks/{id}
 
 ## Summary of the challenge:
 
-* The application takes in a list of unique sensor id's. These id's are numbers of with a length of 17. You can choose
-  how the input will happen: a csv file that is uploaded, etc etc.
+* The application takes in a list of unique sensor id's. These id's are numbers with a length of 17. You can choose
+  how the input will happen: a csv file that is uploaded, for example, but it can be any other way.
 * The application is something that keeps on running until you give it a new list. So it keeps on looping to return the
-  most up to date status when requested.
+  most up to date status of all sensors when requested.
 * The application returns the latest update of the status of the list of sensors. So it shows which sensors are ok and
   which are not ok and why they are not ok. How this is returned is up to you: it can be a rest api, a webservice, it
   doesn't matter.
@@ -60,5 +47,5 @@ DELETE # www.mysensor.io/api/tasks/{id}
 * The application checks for every sensor if the firmware version is compatible with the latest configuration. The
   firmware version always looks has the following structure: FW:DD-MM-YYYY#XX. So it is basically the letters FW, a
   colon, then the date of the firmware starting with day, then month, then year. There is '#'in between and then follows
-  a number of 2 digits. Because the firmware can get many updates over a day. The firmware is compatible starting from
+  a number of 2 digits. This is because the firmware can get many updates over a day. The firmware is compatible starting from
   version FW:23-09-2022:03.
