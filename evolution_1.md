@@ -18,7 +18,7 @@ combinations:
 |1|1 |
 |1|0 |
 
-So that means that every 4 minutes, all of the combinations should have been sent in a message. These message are stored
+So that means that every 4 minutes, all of the combinations should have been sent in a message. These messages are stored
 in the "messages" tables. The structure of the table is as following:
 
 ```markdown
@@ -30,7 +30,7 @@ dout: int
 ```
 
 These messages end up in our database. In order to see if the digital input and output is working correctly, you can
-query the database to see and check if all combinations are there.
+query the database to see and check if all combinations are there for a certain period of time. 
 
 **Here is the challenge of the first evolution**: Adjust the application so that it can also validate the digital input and
 digital output of the sensors.
@@ -40,5 +40,8 @@ digital output of the sensors.
 * For each device, fetch enough messages to see if all digital input/digital output combinations has been formed.
 * If not all the combinations have been formed, the sensor can be marked as 'invalid'.
 * Add the results to the already existing results. 
+
+## Hints: 
+* you might think that you need an actual database to do this. But you don't. Anything that resembles a database will do. In other words, you can use any datastructure and pretend it be a database. 
 
 
