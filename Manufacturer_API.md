@@ -90,7 +90,7 @@ A task can be in one of the next statuses:
 |Error|3 | The task was either interrupted by an error or it completed causing an error|
 |Ongoing|4 | The task is ongoing|
 
-#### GET # www.mysensor.io/api/tasks?sensor_serial=124345654567876
+#### GET # www.mysensor.io/api/tasks?sensor_serial={sensor id}
 
 API endpoint to get the tasks linked to a specific sensor. A response looks like this: 
 
@@ -147,3 +147,19 @@ The result of this endpoint is the id of the created task, for example: 16624171
 
 #### DELETE # www.mysensor.io/api/tasks/{id}
 
+## Files 
+
+#### GET # www.mysensor.io/api/files/{id}
+
+API endpoint to get information about firmware files or configuration files. A response looks like this:
+
+```json
+{
+  "id": "a3e4aed2-b091-41a6-8265-2185040e2c32",
+  "name": "PTL300_FWX-123.tar",
+  "type": "firmware",
+  "released_at": "2022-10-17 16:00:07",
+  "created_by": 1456,
+  "company_id": 344567
+}
+```
