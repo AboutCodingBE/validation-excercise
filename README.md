@@ -14,10 +14,11 @@ I will never show nor mention any personal information in the content I create w
 
 ### How this challenge works
 This challenge consists out of 3 phases. First, there is the base challenge. You should do this first. Design and create
-a solution to the best of your potential. When you are done with the base challenge, check out the branch called 'evolution_1'. This 
+a solution to the best of your potential. When you are done with the base challenge, check out the branch called '[evolution_1](https://github.com/AboutCodingBE/validation-excercise/blob/evolution_1/evolution_1.md)'. This 
 is the next level of the challenge. This is either one or a series of changes that needs to be done in your solution. 
 Since software is every changing, and part of software design is to adapt to change, change should be part of the challenge. When you are done, 
-you can check out the branch called 'evolution_2' which is yet another level of the challenge. 
+you can check out the branch called '[evolution_2](https://github.com/AboutCodingBE/validation-excercise/blob/evolution_2/evolution_2.md)' which is yet another level of the challenge. These evolutions are on different branches
+because I didn't want to spoil the fun while you are working on the base challenge.
 
 These evolutions have the intention to challenge you and your design skills on the different aspects of software design. With these evolutions, I aim
 to give you a taste of what might happen in real life situations. 
