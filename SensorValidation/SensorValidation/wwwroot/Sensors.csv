@@ -1,0 +1,10 @@
+serial	type	status_id	current_configuration	current_firmware	created_at	updated_at	status_name	next_task	activity_status	task_queue
+1	TS50X	1	some_oonfiguration.cfg	FW:23-09-2022:03	3/31/2022 11:26	10/18/2022 17:53	Idle	125	Online	"125,325,654"
+2	TS50X	2	some_oonfiguration.cfg	FW:23-09-2022:03	3/31/2022 11:26	10/18/2022 17:53	Awaiting	126	Disconnected	"126,782,564"
+3	TS50X	1	some_oonfiguration.cfg	FW:23-09-2022:03	3/31/2022 11:26	10/18/2022 17:53	Idle	132	Error	"132,456,789"
+4	TS50X	2	some_oonfiguration.cfg	FW:23-09-2022:03	3/31/2022 11:26	10/18/2022 17:53	Awaiting	361	Online	"361,52,1"
+5	TS50X	2	some_oonfiguration.cfg	FW:23-09-2022:03	3/31/2022 11:26	10/18/2022 17:53	Awaiting	369	Error	"369,696,780"
+6	TS50X	2	some_oonfiguration.cfg	FW:23-09-2022:03	3/31/2022 11:26	10/18/2022 17:53	Awaiting	320	Online	"320,123,012,364"
+7	TS50X	3	some_oonfiguration.cfg	FW:23-09-2022:03	3/31/2022 11:26	10/18/2022 17:53	Updating	266	Online	"266,336,251,515"
+8	TS50X	2	some_oonfiguration.cfg	FW:23-09-2022:03	3/31/2022 11:26	10/18/2022 17:53	Awaiting	10	Error	"10,3652,2545,23"
+9	TS50X	1	some_oonfiguration.cfg	FW:23-09-2022:03	3/31/2022 11:26	10/18/2022 17:53	Idle	166	Disconnected	"166,215,914,885,369"
