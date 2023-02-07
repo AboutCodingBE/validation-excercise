@@ -18,8 +18,9 @@ application should say that the firmware is not ok. If the sensor had incompatib
 not installed, the application should indicate this until the firmware and the configuration have been installed.
 
 The application needs to verify if these sensors have a firmware version compatible with the latest configuration
-options. If the firmware is not compatible, you need to schedule a task to install the latest firmware over the
-internet. The shipments of new sensors do not have the latest configuration either. So you need to also schedule a task
+options. The firmware is compatible starting from version FW:23-09-2022:03. Any sensors with a firmware version before 
+this one need an update. If the firmware is not compatible, you need to schedule a task to install the latest firmware over the
+internet. The shipments of new sensors do not have the latest configuration either installed yet. So you need to also schedule a task
 to install this configuration.
 
 You have to realise that these sensors have 4G connections. They can have temporarily bad connections and so tasks can
