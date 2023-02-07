@@ -21,7 +21,7 @@ The application needs to verify if these sensors have a firmware version compati
 options. The firmware is compatible starting from version FW:23-09-2022:03. Any sensors with a firmware version before 
 this one need an update. If the firmware is not compatible, you need to schedule a task to install the latest firmware over the
 internet. The shipments of new sensors do not have the latest configuration either installed yet. So you need to also schedule a task
-to install this configuration.
+to install this configuration. 
 
 You have to realise that these sensors have 4G connections. They can have temporarily bad connections and so tasks can
 be scheduled for firmware updates for a while. Before you schedule a new task, check if there isn’t one already. If
@@ -37,6 +37,9 @@ So you need to use his API to get the job done.
   how the input will happen: a csv file that is uploaded, for example, but it can be any other way.
 * The application is something that keeps on running until you give it a new list. So it keeps on looping to return the
   most up to date status of all sensors when requested.
+* Installation tasks might fail. So if a task has been scheduled, you need to check in future loops of the program if the task has
+  completed successfully. If a task is still pending after 2 hours or there has been an error, you need to delete it and reschedule. You 
+  can use the task id which has been returned upon creating a task to query the status of that task. 
 * The application returns the latest update of the status of the list of sensors. So it shows which sensors are ok and
   which are not ok and why they are not ok. How this is returned is up to you: it can be a rest api, a webservice, it
   doesn't matter.
@@ -44,7 +47,8 @@ So you need to use his API to get the job done.
   installed.
 * There is a time cost to updating the firmware: This can easily take up to an hour. So if the firmware isn't the latest
   firmware, but is compatible with the configuration, you don't have to schedule an update.
-* Check for tasks that have been running for more than 2 hours. These need to be cancelled.
+* Since these sensors come straight from the manufacturer, they will never have the latest configuration installed. So you 
+  always need to schedule a task for that in the first loop of the program. 
 * The application checks for every sensor if the firmware version is compatible with the latest configuration. The
   firmware version always looks has the following structure: FW:DD-MM-YYYY#XX. So it is basically the letters FW, a
   colon, then the date of the firmware starting with day, then month, then year. There is '#'in between and then follows
