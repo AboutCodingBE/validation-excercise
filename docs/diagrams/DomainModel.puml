@@ -1,0 +1,90 @@
+@startuml
+
+package Sensor {
+    class Sensor {
+      -SensorId sensorId (1..1)
+      -Firmware firmware (1..1)
+      -Configuration configuration (1..1)
+      -SensorTasksStatus sensorTasksStatus (1..1)
+      -SensorActivityStatus sensorActivityStatus (1..1)
+    }
+
+    class SensorId {
+      -String value (1..1)
+    }
+
+    class Firmware {
+      -FirmwareVersion firmwareVersion (1..1)
+    }
+
+    class FirmwareVersion {
+      -Integer day (1..1)
+      -Integer month (1..1)
+      -Integer year (1..1)
+      -Integer serialNumber (1..1)
+    }
+
+    class Configuration {
+      -String name (1..1)
+    }
+
+    enum SensorTasksStatus {
+      IDLE,
+      AWAITING,
+      UPDATING
+    }
+
+    enum SensorActivityStatus {
+      ONLINE,
+      DISCONNECTED,
+      ERROR
+    }
+
+    Sensor *-left- SensorId
+    Sensor *-down- Firmware
+    Sensor *-down-- Configuration
+    Sensor *-down- SensorTasksStatus
+    Sensor *-down-- SensorActivityStatus
+    Firmware *-down- FirmwareVersion
+}
+
+package Task {
+    class Task {
+      -SensorId sensorId (1..1)
+      -TaskId taskId (1..1)
+      -UpdateFile file (1..1)
+      -TaskType type (1..1)
+      -TaskStatus status (1..1)
+    }
+
+    class TaskId {
+      -String value (1..1)
+    }
+
+    class UpdateFile {
+      -String name (1..1)
+    }
+
+    enum TaskType {
+      UPDATE_CONFIGURATION,
+      UPDATE_FIRMWARE
+    }
+
+    enum TaskStatus {
+      PENDING,
+      COMPLETED,
+      ERROR,
+      ONGOING
+    }
+
+    Task *-right- TaskId
+    Task *-left- UpdateFile
+    Task *-down- TaskType
+    Task *-down- TaskStatus
+}
+
+Task o-up- SensorId
+
+
+
+@enduml
