@@ -143,5 +143,7 @@ API endpoint to create a task for a specific sensor.
 
 ```
 
+The result of this endpoint is the id of the created task, for example: 16624171
+
 #### DELETE # www.mysensor.io/api/tasks/{id}
 
