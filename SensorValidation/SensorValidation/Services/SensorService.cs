@@ -4,7 +4,7 @@ namespace SensorValidation.Services
 {
     public class SensorService
     {
-        public List<Sensor> CheckSensors()
+        public List<SensorModel> CheckSensors()
         {
             throw new NotImplementedException();
         }
