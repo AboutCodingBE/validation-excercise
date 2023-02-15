@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/SensorValidation/SensorValidation/SensorValidation.db-shm
+/SensorValidation/SensorValidation/SensorValidation.db-wal

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SensorValidation.Persistence;
 
@@ -10,9 +11,10 @@ using SensorValidation.Persistence;
 namespace SensorValidation.Migrations
 {
     [DbContext(typeof(SensorValidationDbContext))]
-    partial class SensorValidationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230215051611_Added_Sensor_Navigation_Property_To_TaskSensor_Model")]
+    partial class Added_Sensor_Navigation_Property_To_TaskSensor_Model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.13");

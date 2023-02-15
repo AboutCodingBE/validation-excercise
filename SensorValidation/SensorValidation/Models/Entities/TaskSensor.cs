@@ -9,6 +9,8 @@ namespace SensorValidation.Models.Entities
         public long SensorSerial { get; set; }
         public string FileId { get; set; }
         public string Type { get; set; }
+        public SensorModel Sensor { get; set; }
+
     }
 
 }
