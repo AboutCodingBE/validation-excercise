@@ -1,7 +1,11 @@
-﻿namespace SensorValidation.Models.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SensorValidation.Models.Entities
 {
-    public class TaskSensor
+    public class TaskSensorModel
     {
+        [Key]
+        public int Id { get; set; }
         public long SensorSerial { get; set; }
         public string FileId { get; set; }
         public string Type { get; set; }
