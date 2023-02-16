@@ -2,11 +2,11 @@
 
 package Sensor {
     class Sensor {
-      -SensorId sensorId (1..1)
+      -SensorId id (1..1)
       -Firmware firmware (1..1)
       -Configuration configuration (1..1)
-      -SensorTasksStatus sensorTasksStatus (1..1)
-      -SensorActivityStatus sensorActivityStatus (1..1)
+      -SensorTasksStatus tasksStatus (1..1)
+      -SensorActivityStatus activityStatus (1..1)
     }
 
     class SensorId {
@@ -14,7 +14,7 @@ package Sensor {
     }
 
     class Firmware {
-      -FirmwareVersion firmwareVersion (1..1)
+      -FirmwareVersion version (1..1)
     }
 
     class FirmwareVersion {
@@ -25,7 +25,7 @@ package Sensor {
     }
 
     class Configuration {
-      -String name (1..1)
+      -FileName name (1..1)
     }
 
     enum SensorTasksStatus {
@@ -51,7 +51,7 @@ package Sensor {
 package Task {
     class Task {
       -SensorId sensorId (1..1)
-      -TaskId taskId (1..1)
+      -TaskId id (1..1)
       -UpdateFile file (1..1)
       -TaskType type (1..1)
       -TaskStatus status (1..1)
@@ -62,7 +62,7 @@ package Task {
     }
 
     class UpdateFile {
-      -String name (1..1)
+      -FileName name (1..1)
     }
 
     enum TaskType {

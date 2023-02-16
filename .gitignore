@@ -1,0 +1,21 @@
+# IntelliJ IDEA files
+.idea/
+
+# Exclude compiled Java classes
+*.class
+
+# Exclude generated files and folders
+target/
+out/
+
+# Exclude build output
+build/
+out/
+bin/
+classes/
+
+# Exclude miscellaneous files
+*.log
+*.iml
+*.ipr
+*.iws
