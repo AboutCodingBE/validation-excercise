@@ -1,0 +1,21 @@
+@startuml
+
+:Create Shipment;
+
+if (errors?) then (yes)
+  :Save Shipment as received and invalid;
+  stop
+endif
+
+:Save Shipment as received;
+
+:Execute policies;
+if (errors?) then (yes)
+  :Update Shipment as invalid or 'issues found';
+  stop
+endif
+
+:Update Shipment as valid;
+
+stop
+@enduml

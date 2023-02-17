@@ -30,7 +30,6 @@ package application/usecase/shipment/validate {
   ValidateShipmentUseCase *-down- ShipmentRepository
   ValidateShipmentUseCase *-down- ShipmentPolicy
   ValidateShipmentUseCase -right-> ValidateShipmentCommand
-  ValidateShipmentUseCase -right-> ValidateShipmentCommand
   ValidateShipmentUseCase -left-> ValidateShipmentUseCaseResult
 
   ValidateShipmentUseCaseResult *-down- ValidateShipmentUseCaseResultCode
