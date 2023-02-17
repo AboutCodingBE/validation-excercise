@@ -1,5 +1,25 @@
 @startuml
 
+package shipment {
+  class Shipment {
+    -ShipmentId id (1..1)
+    -ShipmentDescription description (1..1)
+    -SensorId sensorIds (1..n)
+  }
+  
+  class ShipmentId {
+    -String value (1..1)
+  }
+  
+  class ShipmentDescription {
+    -String value (1..1)
+  }
+  
+  Shipment o-up- ShipmentId
+  Shipment o-up- ShipmentDescription
+}
+
+
 package Sensor {
     class Sensor {
       -SensorId id (1..1)
@@ -83,6 +103,7 @@ package Task {
     Task *-down- TaskStatus
 }
 
+Shipment o-down- SensorId
 Task o-up- SensorId
 
 

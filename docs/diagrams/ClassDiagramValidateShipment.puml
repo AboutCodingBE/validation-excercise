@@ -1,0 +1,52 @@
+@startuml
+
+package application/usecase/shipment/validate {
+  class ValidateShipmentCommand {
+    -ShipmentId shipmentId (1..1)
+    -ShipmentDescription description (1..1)
+    -SensorId sensorIds (1..n)
+  }
+
+  class ValidateShipmentUseCase {
+    -ShipmentRepository shipmentRepository (1..1)
+    -ShipmentPolicy shipmentPolicy (1..1)
+  }
+
+  class ValidateShipmentUseCaseResult {
+    -ValidateShipmentUseCaseResultCode code (1..1)
+    -String errors (0..n)
+  }
+
+  enum ValidateShipmentUseCaseResultCode {
+    VALID,
+    INVALID,
+    ISSUES_FOUND,
+    ERROR
+  }
+
+  interface ShipmentRepository
+  class ShipmentPolicy
+
+  ValidateShipmentUseCase *-down- ShipmentRepository
+  ValidateShipmentUseCase *-down- ShipmentPolicy
+  ValidateShipmentUseCase -right-> ValidateShipmentCommand
+  ValidateShipmentUseCase -right-> ValidateShipmentCommand
+  ValidateShipmentUseCase -left-> ValidateShipmentUseCaseResult
+
+  ValidateShipmentUseCaseResult *-down- ValidateShipmentUseCaseResultCode
+}
+
+package domain/shipment {
+  class ShipmentId
+  class ShipmentDescription
+}
+
+package domain/sensor {
+  class SensorId
+}
+
+ValidateShipmentCommand o-down- ShipmentId
+ValidateShipmentCommand o-down-- ShipmentDescription
+ValidateShipmentCommand o-up- SensorId
+
+@enduml
