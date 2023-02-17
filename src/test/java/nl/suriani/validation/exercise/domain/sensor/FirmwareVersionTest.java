@@ -58,4 +58,30 @@ class FirmwareVersionTest {
                 () -> new FirmwareVersion(1, 12, 2020, -1));
     }
 
+    @Test
+    void testFromString() {
+        var text = "FW:02-11-2021#03";
+
+        var firmwareVersion = FirmwareVersion.fromString(text);
+
+        assertEquals(2, firmwareVersion.day());
+        assertEquals(11, firmwareVersion.month());
+        assertEquals(2021, firmwareVersion.year());
+        assertEquals(3, firmwareVersion.serialNumber());
+    }
+
+    @Test
+    void testToStringWithoutZeroPadding() {
+        var firmwareVersion = new FirmwareVersion(12, 11, 2021, 13);
+
+        assertEquals("FW:12-11-2021#13", firmwareVersion.toString());
+    }
+
+    @Test
+    void testToStringWithZeroPadding() {
+        var firmwareVersion = new FirmwareVersion(1, 2, 3, 4);
+
+        assertEquals("FW:01-02-0003#04", firmwareVersion.toString());
+    }
+
 }

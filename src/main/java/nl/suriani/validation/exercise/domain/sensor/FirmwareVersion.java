@@ -5,10 +5,11 @@ import nl.suriani.validation.exercise.domain.shared.MalformedFieldException;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 public record FirmwareVersion(Integer day, Integer month, Integer year, Integer serialNumber) {
 
-    public FirmwareVersion { // TODO implement toString and fromString
+    public FirmwareVersion {
         Guards.isRequired(day);
         Guards.isRequired(month);
         Guards.isRequired(year);
@@ -16,6 +17,21 @@ public record FirmwareVersion(Integer day, Integer month, Integer year, Integer 
 
         checkDate(day, month, year);
         checkSerialNumber(serialNumber);
+    }
+
+    public static FirmwareVersion fromString(String text) {
+        var pattern = Pattern.compile("FW:([0-9]{2})-([0-9]{2})-([0-9]{4})#([0-9]{2})");
+        var matcher = pattern.matcher(text);
+
+        if (!matcher.matches()) {
+            throw new MalformedFieldException("Invalid firmware version '" + text + "'");
+        }
+
+        var day = Integer.parseInt(matcher.group(1));
+        var month = Integer.parseInt(matcher.group(2));
+        var year = Integer.parseInt(matcher.group(3));
+        var serialNumber = Integer.parseInt(matcher.group(4));
+        return new FirmwareVersion(day, month, year, serialNumber);
     }
 
     private void checkDate(Integer day, Integer month, Integer year) {
@@ -30,5 +46,10 @@ public record FirmwareVersion(Integer day, Integer month, Integer year, Integer 
         if (serialNumber < 0) {
             throw new MalformedFieldException("serialNumber must be 0 or positive");
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("FW:%02d-%02d-%04d#%02d", day, month, year, serialNumber);
     }
 }
