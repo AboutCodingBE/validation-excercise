@@ -65,6 +65,22 @@ be coordinated to avoid double processing and race conditions.
 api) to avoid modifying the code of the application every time the information change. Fetching the information must be
 abstracted away from the application core as it is also volatile.
 
+## Detected events
+### Shipment
+- ShipmentReceived
+- ShipmentNotValidated
+- ShipmentValidated
+- ShipmentValidationFailed
+
+### Sensor
+- FirmwareUpdated
+- FirmwareUpdateCancelled
+- FirmwareUpdateFailed
+- ConfigurationUpdated
+- ConfigurationUpdateCancelled
+- ConfigurationUpdateFailed
+
+
 ## Chosen architectural style
 - A **Use Case Driven approach** seems to be appropriate as it allows to define a number of flows that represent business 
 transactions that are unlikely to change. That would add an initial delay but in turn allow growing and modifying the

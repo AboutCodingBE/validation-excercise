@@ -1,0 +1,72 @@
+@startuml
+
+package shared {
+  abstract class DomainEvent {
+    -LocalDateTime creationDateTime
+    -String name
+  }
+}
+
+package shipment/events {
+  class ShipmentReceived {
+  }
+
+  class ShipmentValidated {
+  }
+
+  class ShipmentNotValidated {
+    -String reason (1..1)
+  }
+
+  class ShipmentValidationFailed {
+    -String reason (1..1)
+  }
+
+  DomainEvent <|-down- ShipmentReceived
+  DomainEvent <|-down- ShipmentValidated
+  DomainEvent <|-down- ShipmentNotValidated
+  DomainEvent <|-down- ShipmentValidationFailed
+}
+
+package sensor/events {
+  class FirmwareUpdated {
+    -FirmwareVersion oldVersion (1..1)
+    -FirmwareVersion newVersion (1..1)
+  }
+
+  class FirmwareUpdateCancelled {
+    -FirmwareVersion oldVersion (1..1)
+    -FirmwareVersion newVersion (1..1)
+  }
+
+  class FirmwareUpdateFailed {
+    -FirmwareVersion oldVersion (1..1)
+    -FirmwareVersion newVersion (1..1)
+    -String reason (1..1)
+  }
+
+  class ConfigurationUpdated {
+    -Configuration oldVersion (1..1)
+    -Configuration newVersion (1..1)
+  }
+
+  class ConfigurationUpdateCancelled {
+    -Configuration oldVersion (1..1)
+    -Configuration newVersion (1..1)
+  }
+
+  class ConfigurationUpdateFailed {
+    -Configuration oldVersion (1..1)
+    -Configuration newVersion (1..1)
+    -String reason (1..1)
+  }
+
+  DomainEvent <|-up- FirmwareUpdated
+  DomainEvent <|-up- FirmwareUpdateCancelled
+  DomainEvent <|-up- FirmwareUpdateFailed
+  DomainEvent <|-up- ConfigurationUpdated
+  DomainEvent <|-up- ConfigurationUpdateCancelled
+  DomainEvent <|-up- ConfigurationUpdateFailed
+}
+
+@enduml
