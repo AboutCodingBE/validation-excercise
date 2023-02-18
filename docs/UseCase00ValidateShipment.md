@@ -1,8 +1,8 @@
 [Go back](Index.md)
 
 # Validate Shipment Use Case
-## Domain model
+## Class diagram
 ![Domain model](images/ClassDiagramValidateShipment.png)
 
-## Activity
+## Activity diagram
 ![Activity](images/ActivityDiagramValidateShipment.png)
