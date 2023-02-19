@@ -42,14 +42,14 @@ public record Shipment(ShipmentId id, ShipmentDescription description, List<Doma
 
     private void checkEvents(List<DomainEvent> events) {
         var legalCombinations = List.of(
-                List.of(ShipmentReceived.class.getSimpleName()),
-                List.of(ShipmentReceived.class.getSimpleName(), ShipmentValidated.class.getSimpleName()),
-                List.of(ShipmentReceived.class.getSimpleName(), ShipmentNotValidated.class.getSimpleName()),
-                List.of(ShipmentReceived.class.getSimpleName(), ShipmentValidationFailed.class.getSimpleName())
+                List.of(ShipmentReceived.class),
+                List.of(ShipmentReceived.class, ShipmentValidated.class),
+                List.of(ShipmentReceived.class, ShipmentNotValidated.class),
+                List.of(ShipmentReceived.class, ShipmentValidationFailed.class)
         );
 
         var eventsNames = events.stream()
-                .map(DomainEvent::name)
+                .map(DomainEvent::getClass)
                 .toList();
 
         if (!legalCombinations.contains(eventsNames)) {
