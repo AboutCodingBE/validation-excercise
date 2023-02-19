@@ -73,6 +73,7 @@ abstracted away from the application core as it is also volatile.
 - ShipmentValidationFailed
 
 ### Sensor
+- SensorRegistered
 - FirmwareUpdated
 - FirmwareUpdateCancelled
 - FirmwareUpdateFailed
@@ -80,6 +81,9 @@ abstracted away from the application core as it is also volatile.
 - ConfigurationUpdateCancelled
 - ConfigurationUpdateFailed
 
+In the scenario there is no mention of the possibility of stopping
+tracking the shipment or unregistering sensors. It seems sensible to foresee the such functionalities
+would be requested in the future, but at the present moment it is not necessary to add domain events for them.
 
 ## Chosen architectural style
 - A **Use Case Driven approach** seems to be appropriate as it allows to define a number of flows that represent business 

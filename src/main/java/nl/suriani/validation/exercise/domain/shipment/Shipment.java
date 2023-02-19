@@ -34,12 +34,6 @@ public record Shipment(ShipmentId id, ShipmentDescription description, List<Doma
         return new Shipment(id, description, addEvent(new ShipmentNotValidated(reason)));
     }
 
-    private List<DomainEvent> addEvent(DomainEvent event) {
-        var events = new ArrayList<>(this.events);
-        events.add(event);
-        return List.copyOf(events);
-    }
-
     private void checkEvents(List<DomainEvent> events) {
         var legalCombinations = List.of(
                 List.of(ShipmentReceived.class),
@@ -48,12 +42,18 @@ public record Shipment(ShipmentId id, ShipmentDescription description, List<Doma
                 List.of(ShipmentReceived.class, ShipmentValidationFailed.class)
         );
 
-        var eventsNames = events.stream()
+        var eventsTypes = events.stream()
                 .map(DomainEvent::getClass)
                 .toList();
 
-        if (!legalCombinations.contains(eventsNames)) {
-            throw new IllegalStateException("Illegal sequence events: " + eventsNames);
+        if (!legalCombinations.contains(eventsTypes)) {
+            throw new IllegalStateException("Illegal sequence events: " + eventsTypes);
         }
+    }
+
+    private List<DomainEvent> addEvent(DomainEvent event) {
+        var events = new ArrayList<>(this.events);
+        events.add(event);
+        return List.copyOf(events);
     }
 }

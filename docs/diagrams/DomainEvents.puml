@@ -29,6 +29,8 @@ package shipment/events {
 }
 
 package sensor/events {
+  class SensorRegistered {}
+
   class FirmwareUpdated {
     -FirmwareVersion oldVersion (1..1)
     -FirmwareVersion newVersion (1..1)
@@ -61,6 +63,7 @@ package sensor/events {
     -String reason (1..1)
   }
 
+  DomainEvent <|-up-- SensorRegistered
   DomainEvent <|-up- FirmwareUpdated
   DomainEvent <|-up- FirmwareUpdateCancelled
   DomainEvent <|-up- FirmwareUpdateFailed
