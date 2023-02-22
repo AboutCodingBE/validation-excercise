@@ -1,0 +1,43 @@
+@startuml
+
+package application/usecase/sensor {
+  class CheckSensorStatusCommand {
+    -SensorId SensorId (1..1)
+  }
+
+  class CheckSensorStatusUseCase {
+    -SensorManifacturerGateway sensorManifacturerGateway (1..1)
+  }
+
+  class CheckSensorStatusUseCaseResult {
+    -CheckSensorStatusUseCaseResultCode code (1..1)
+    -String errors (0..n)
+  }
+
+  enum CheckSensorStatusUseCaseResultCode {
+    NOT_FOUND,
+    NO_ACTION_NEEDED,
+    UPDATE_CONFIGURATION,
+    UPDATE_FIRMWARE,
+    ERROR
+  }
+
+  CheckSensorStatusUseCase -right-> CheckSensorStatusCommand
+  CheckSensorStatusUseCase -left-> CheckSensorStatusUseCaseResult
+
+  CheckSensorStatusUseCaseResult *-down- CheckSensorStatusUseCaseResultCode
+}
+
+package application/port/shipment {
+    interface SensorManifacturerGateway
+    interface SensorRepository
+}
+
+package domain/sensor {
+  class SensorId
+}
+
+CheckSensorStatusCommand o-up- SensorId
+CheckSensorStatusUseCase o-up- SensorManifacturerGateway
+CheckSensorStatusUseCase o-up- SensorRepository
+@enduml

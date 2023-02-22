@@ -1,6 +1,6 @@
 @startuml
 
-package application/usecase/shipment/validate {
+package application/usecase/shipment {
   class ValidateShipmentCommand {
     -ShipmentId shipmentId (1..1)
     -ShipmentDescription description (1..1)
@@ -24,15 +24,18 @@ package application/usecase/shipment/validate {
     ERROR
   }
 
-  interface ShipmentRepository
   class ShipmentPolicy
 
-  ValidateShipmentUseCase *-down- ShipmentRepository
+
   ValidateShipmentUseCase *-down- ShipmentPolicy
   ValidateShipmentUseCase -right-> ValidateShipmentCommand
   ValidateShipmentUseCase -left-> ValidateShipmentUseCaseResult
 
   ValidateShipmentUseCaseResult *-down- ValidateShipmentUseCaseResultCode
+}
+
+package application/port/shipment {
+    interface ShipmentRepository
 }
 
 package domain/shipment {
@@ -47,5 +50,5 @@ package domain/sensor {
 ValidateShipmentCommand o-down- ShipmentId
 ValidateShipmentCommand o-down-- ShipmentDescription
 ValidateShipmentCommand o-up- SensorId
-
+ValidateShipmentUseCase o-up- ShipmentRepository
 @enduml

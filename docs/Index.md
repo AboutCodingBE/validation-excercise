@@ -4,6 +4,8 @@
 
 (2) [Domain model](DomainModel.md)
 
-(3) TODO - Process Manager Receive shipment
+(3) Use cases
 
-(4) [Validate Shipment Use Case](UseCase00ValidateShipment.md)
+(3.1) [Validate Shipment Use Case](UseCase00ValidateShipment.md)
+
+(3.1) [Check Sensor Status Use Case](UseCase01CheckSensorStatus.md)

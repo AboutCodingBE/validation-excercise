@@ -1,0 +1,30 @@
+@startuml
+
+:Find sensor by id;
+
+if (not found?) then (yes)
+  :Answer Not Found;
+  stop
+endif
+
+:Fetch sensor information at the manifacturer;
+
+if (not found?) then (yes)
+  :Answer Error <Unknown sensor>;
+  stop
+endif
+
+switch (Needs update?)
+case (yes, configuration)
+  :Answer Update Configuration;
+
+case (yes, firmware)
+  :Answer Update Firmware;
+
+case (no)
+  :Answer No Action Needed;
+
+endswitch
+
+stop
+@enduml
