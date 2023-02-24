@@ -1,13 +1,10 @@
 @startuml
 
-package shared {
-  abstract class DomainEvent {
-    -LocalDateTime creationDateTime
-    -String name
-  }
+package domain/shared as ds {
+  class DomainEvent
 }
 
-package shipment/events {
+package shipment/events as she {
   class ShipmentReceived {
   }
 
@@ -22,54 +19,64 @@ package shipment/events {
     -String reason (1..1)
   }
 
-  DomainEvent <|-down- ShipmentReceived
-  DomainEvent <|-down- ShipmentValidated
-  DomainEvent <|-down- ShipmentNotValidated
-  DomainEvent <|-down- ShipmentValidationFailed
 }
 
-package sensor/events {
+package sensor/events as see {
   class SensorRegistered {}
 
-  class FirmwareUpdated {
-    -FirmwareVersion oldVersion (1..1)
-    -FirmwareVersion newVersion (1..1)
+  package firmware {
+      class NeedsFirmwareUpdate
+
+      class FirmwareUpdateScheduled {
+        -FirmwareVersion oldVersion (1..1)
+        -FirmwareVersion newVersion (1..1)
+      }
+
+      class FirmwareUpdated {
+        -FirmwareVersion oldVersion (1..1)
+        -FirmwareVersion newVersion (1..1)
+      }
+
+      class FirmwareUpdateCancelled {
+        -FirmwareVersion oldVersion (1..1)
+        -FirmwareVersion newVersion (1..1)
+      }
+
+      class FirmwareUpdateFailed {
+        -FirmwareVersion oldVersion (1..1)
+        -FirmwareVersion newVersion (1..1)
+        -String reason (1..1)
+      }
   }
 
-  class FirmwareUpdateCancelled {
-    -FirmwareVersion oldVersion (1..1)
-    -FirmwareVersion newVersion (1..1)
-  }
+  package configuration {
 
-  class FirmwareUpdateFailed {
-    -FirmwareVersion oldVersion (1..1)
-    -FirmwareVersion newVersion (1..1)
-    -String reason (1..1)
-  }
+    class NeedsConfigurationUpdate
 
-  class ConfigurationUpdated {
-    -Configuration oldVersion (1..1)
-    -Configuration newVersion (1..1)
-  }
+    class ConfigurationUpdateScheduled {
+      -Configuration oldVersion (1..1)
+      -Configuration newVersion (1..1)
+    }
 
-  class ConfigurationUpdateCancelled {
-    -Configuration oldVersion (1..1)
-    -Configuration newVersion (1..1)
-  }
+    class ConfigurationUpdated {
+      -Configuration oldVersion (1..1)
+      -Configuration newVersion (1..1)
+    }
 
-  class ConfigurationUpdateFailed {
-    -Configuration oldVersion (1..1)
-    -Configuration newVersion (1..1)
-    -String reason (1..1)
-  }
+    class ConfigurationUpdateCancelled {
+      -Configuration oldVersion (1..1)
+      -Configuration newVersion (1..1)
+    }
 
-  DomainEvent <|-up-- SensorRegistered
-  DomainEvent <|-up- FirmwareUpdated
-  DomainEvent <|-up- FirmwareUpdateCancelled
-  DomainEvent <|-up- FirmwareUpdateFailed
-  DomainEvent <|-up- ConfigurationUpdated
-  DomainEvent <|-up- ConfigurationUpdateCancelled
-  DomainEvent <|-up- ConfigurationUpdateFailed
+    class ConfigurationUpdateFailed {
+      -Configuration oldVersion (1..1)
+      -Configuration newVersion (1..1)
+      -String reason (1..1)
+    }
+  }
 }
+
+she -- DomainEvent
+see -- DomainEvent
 
 @enduml

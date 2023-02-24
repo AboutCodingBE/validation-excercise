@@ -1,0 +1,54 @@
+@startuml
+
+package application/usecase/sensor {
+  class ScheduleTaskCommand {
+    -SensorId SensorId (1..1)
+    -TaskType taskType (1..1)
+  }
+
+  class ScheduleTaskUseCase {
+    -SensorRepository sensorRepository (1..1)
+    -SensorManufacturerGateway sensorManufacturerGateway (1..1)
+    -TaskRepository taskRepository (1..1)
+  }
+
+  class ScheduleTaskUseCaseResult {
+    -ScheduleTaskUseCaseResultCode code (1..1)
+    -TaskId taskId (0..1)
+    -String error (0..1)
+  }
+
+  enum ScheduleTaskUseCaseResultCode {
+    DONE,
+    ERROR
+  }
+
+  ScheduleTaskUseCase -right-> ScheduleTaskCommand
+  ScheduleTaskUseCase -left-> ScheduleTaskUseCaseResult
+
+  ScheduleTaskUseCaseResult *-down- ScheduleTaskUseCaseResultCode
+}
+
+package application/port/sensor {
+    interface SensorManufacturerGateway
+    interface SensorRepository
+}
+
+package application/port/task {
+    interface TaskRepository
+}
+
+package domain/sensor {
+  class SensorId
+}
+
+package domain/task {
+  class TaskType
+}
+
+ScheduleTaskCommand o-up- SensorId
+ScheduleTaskCommand o-right- TaskType
+ScheduleTaskUseCase o-up- SensorManufacturerGateway
+ScheduleTaskUseCase o-up- SensorRepository
+ScheduleTaskUseCase o-down-- TaskRepository
+@enduml

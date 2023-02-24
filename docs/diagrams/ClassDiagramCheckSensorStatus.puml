@@ -28,7 +28,7 @@ package application/usecase/sensor {
   CheckSensorStatusUseCaseResult *-down- CheckSensorStatusUseCaseResultCode
 }
 
-package application/port/shipment {
+package application/port/sensor {
     interface SensorManufacturerGateway
     interface SensorRepository
 }

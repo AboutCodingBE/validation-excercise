@@ -20,11 +20,14 @@ endif
 
 
 switch (Needs update?)
-case (yes, configuration)
-  :Answer Update Configuration;
 
 case (yes, firmware)
+  :Notify Needs Firmware Update;
   :Answer Update Firmware;
+
+case (yes, configuration)
+  :Notify Needs Configuration Update;
+  :Answer Update Configuration;
 
 case (no)
   :Answer No Action Needed;
