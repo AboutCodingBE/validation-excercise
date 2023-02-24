@@ -34,6 +34,29 @@ public record FirmwareVersion(Integer day, Integer month, Integer year, Integer 
         return new FirmwareVersion(day, month, year, serialNumber);
     }
 
+    public boolean isSameAs(FirmwareVersion otherVersion) {
+        return this.equals(otherVersion);
+    }
+
+    public boolean isAfter(FirmwareVersion otherVersion) {
+        var thisFirmwareDate = LocalDate.of(year,month, day);
+        var otherFirmwareDate = LocalDate.of(otherVersion.year, otherVersion.month, otherVersion.day);
+
+        if (thisFirmwareDate.isBefore(otherFirmwareDate)) {
+            return false;
+        }
+
+        if (thisFirmwareDate.isAfter(otherFirmwareDate)) {
+            return true;
+        }
+
+        return serialNumber > otherVersion.serialNumber;
+    }
+
+    public boolean isBefore(FirmwareVersion otherVersion) {
+        return !isSameAs(otherVersion) && !isAfter(otherVersion);
+    }
+
     private void checkDate(Integer day, Integer month, Integer year) {
         try {
             LocalDate.of(year, month, day);

@@ -19,7 +19,7 @@ public record Sensor(SensorId id,
          automatically by an external system are possible.
 
          Idea: an option would be keeping the SensorTasksStatus outside this aggregate,
-         made only available when querying the Manifacturer API and returning the result to the users.
+         made only available when querying the Manufacturer API and returning the result to the users.
          However, this option isn't pragmatic as it would cause unnecessary querying to be performed.
          I can keep it for the moment ("there is nothing more permanent than a temporary solution" - someone wise).
     */
@@ -35,13 +35,9 @@ public record Sensor(SensorId id,
     }
 
     public static Sensor registered(SensorId id, Firmware firmware, Configuration configuration,
-                                              SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
-        return new Sensor(id,
-                firmware,
-                configuration,
-                tasksStatus,
-                activityStatus,
-                List.of(new SensorRegistered()));
+                                    SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
+
+        return new Sensor(id, firmware, configuration, tasksStatus, activityStatus, List.of(new SensorRegistered()));
     }
 
     public Sensor refresh(SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
@@ -132,7 +128,7 @@ public record Sensor(SensorId id,
                         ConfigurationUpdateFailed.class);
 
         legalEvents.stream()
-                .filter(event -> !eventTypes.contains(event))
+                .filter(event -> !legalEvents.contains(event))
                 .findFirst()
                 .ifPresent(ignore -> failBecauseOfIllegalSequence(events));
     }

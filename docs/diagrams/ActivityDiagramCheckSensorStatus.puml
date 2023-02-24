@@ -7,12 +7,17 @@ if (not found?) then (yes)
   stop
 endif
 
-:Fetch sensor information at the manifacturer;
+:Refresh last_updated;
+
+:Fetch sensor information at the manufacturer;
 
 if (not found?) then (yes)
   :Answer Error <Unknown sensor>;
   stop
 endif
+
+:Save sensor with new information;
+
 
 switch (Needs update?)
 case (yes, configuration)

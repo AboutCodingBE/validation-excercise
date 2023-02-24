@@ -6,7 +6,7 @@ package application/usecase/sensor {
   }
 
   class CheckSensorStatusUseCase {
-    -SensorManifacturerGateway sensorManifacturerGateway (1..1)
+    -SensorManufacturerGateway sensorManufacturerGateway (1..1)
   }
 
   class CheckSensorStatusUseCaseResult {
@@ -15,7 +15,7 @@ package application/usecase/sensor {
   }
 
   enum CheckSensorStatusUseCaseResultCode {
-    NOT_FOUND,
+    NOT_REGISTERED,
     NO_ACTION_NEEDED,
     UPDATE_CONFIGURATION,
     UPDATE_FIRMWARE,
@@ -29,7 +29,7 @@ package application/usecase/sensor {
 }
 
 package application/port/shipment {
-    interface SensorManifacturerGateway
+    interface SensorManufacturerGateway
     interface SensorRepository
 }
 
@@ -38,6 +38,6 @@ package domain/sensor {
 }
 
 CheckSensorStatusCommand o-up- SensorId
-CheckSensorStatusUseCase o-up- SensorManifacturerGateway
+CheckSensorStatusUseCase o-up- SensorManufacturerGateway
 CheckSensorStatusUseCase o-up- SensorRepository
 @enduml

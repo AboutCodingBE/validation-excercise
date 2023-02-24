@@ -33,7 +33,7 @@ provided by an external data source.
 
 ### What can change in the same implementation during over time?
 - more channels and data formats may be added.
-- interactions with the Manifacturer API may change, as well as the format of the data provided.
+- interactions with the Manufacturer API may change, as well as the format of the data provided.
 - a significantly higher amount of users may be using the application.
 - a significantly higher amount of sensors per shipment may be delivered.
 - more compatibility issues may be known, as well as false positives may be initially assumed and then debunked.
@@ -46,17 +46,17 @@ they should be modelled and added as part of the application core or even the do
 
 ### Intervention points
 - the format of the shipment information as well as concepts about delivery channels may not be part of the application core.
-- interactions with the Manifacturer API and data format of its responses must also be abstracted away in order to keep 
+- interactions with the Manufacturer API and data format of its responses must also be abstracted away in order to keep 
 the application core stable.
 - checking the sensors status should not be included in the same flow that reads the shipment information. The latter should
 read and validate the provided information and make the information internally available through a persistent storage.
 - checking the sensors status should be done at regular intervals (therefore scheduled, to avoid flooding of requests 
-the Manifacturer API) and each check should be performed autonomously. A possible implementation is: every x seconds, fetch
+the Manufacturer API) and each check should be performed autonomously. A possible implementation is: every x seconds, fetch
 the sensor with the earliest 'lastCheckTimestamp', if is longer than y minutes ago, refresh timestamp and check status.
 - scheduling updates must be not included in the flow that checks the sensor status. However, the latter may trigger the former
 asynchronously.
 - every scheduling logic should be decoupled from the triggered flow, as it can change in the future. For example,
-an agreement can be made with the manifacturer to provide an asynchronous channel to schedule updates, instead of the
+an agreement can be made with the manufacturer to provide an asynchronous channel to schedule updates, instead of the
 current synchronous endpoint.
 - cancelling updates must not be included in the same flow of scheduling updates or checking the sensor status.
 - the application should be deployed on multiple nodes while sharing the same persistent storage and scheduling checks should
