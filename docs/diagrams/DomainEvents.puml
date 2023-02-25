@@ -25,7 +25,7 @@ package sensor/events as see {
   class SensorRegistered {}
 
   package firmware {
-      class NeedsFirmwareUpdate
+      class FirmwareUpdateRequired
 
       class FirmwareUpdateScheduled {
         -FirmwareVersion oldVersion (1..1)
@@ -51,7 +51,7 @@ package sensor/events as see {
 
   package configuration {
 
-    class NeedsConfigurationUpdate
+    class ConfigurationUpdateRequired
 
     class ConfigurationUpdateScheduled {
       -Configuration oldVersion (1..1)
