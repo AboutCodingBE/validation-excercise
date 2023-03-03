@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class FirmwareUpdateRequired extends DomainEvent {
 
-    public FirmwareUpdateRequired(LocalDateTime creationDateTime) {
-        super(creationDateTime, FirmwareUpdateRequired.class);
+    public FirmwareUpdateRequired() {
+        super(LocalDateTime.now(), FirmwareUpdateRequired.class);
     }
 }

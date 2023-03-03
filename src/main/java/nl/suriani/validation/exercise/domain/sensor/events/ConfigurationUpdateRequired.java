@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class ConfigurationUpdateRequired extends DomainEvent {
 
-    public ConfigurationUpdateRequired(LocalDateTime creationDateTime) {
-        super(creationDateTime, ConfigurationUpdateRequired.class);
+    public ConfigurationUpdateRequired() {
+        super(LocalDateTime.now(), ConfigurationUpdateRequired.class);
     }
 }

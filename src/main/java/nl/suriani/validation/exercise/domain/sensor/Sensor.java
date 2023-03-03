@@ -50,6 +50,16 @@ public record Sensor(SensorId id,
         );
     }
 
+    public Sensor firmwareUpdateRequired() {
+        return new Sensor(id,
+                firmware,
+                configuration,
+                tasksStatus,
+                activityStatus,
+                addEvent(new FirmwareUpdateRequired())
+        );
+    }
+
     public Sensor firmwareUpdated(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
         return new Sensor(id,
                 newFirmware,
@@ -78,6 +88,16 @@ public record Sensor(SensorId id,
                 tasksStatus,
                 activityStatus,
                 addEvent(new FirmwareUpdateFailed(firmware.version(), newFirmware.version(), reason))
+        );
+    }
+
+    public Sensor configurationUpdateRequired() {
+        return new Sensor(id,
+                firmware,
+                configuration,
+                tasksStatus,
+                activityStatus,
+                addEvent(new ConfigurationUpdateRequired())
         );
     }
 

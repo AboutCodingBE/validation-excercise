@@ -4,14 +4,22 @@ import nl.suriani.validation.exercise.adapters.sensor.SensorManufacturerGatewayS
 import nl.suriani.validation.exercise.adapters.sensor.SensorRepositoryStub;
 import nl.suriani.validation.exercise.application.port.sensor.SensorAtManufacturer;
 import nl.suriani.validation.exercise.domain.sensor.*;
+import nl.suriani.validation.exercise.domain.sensor.events.ConfigurationUpdateRequired;
+import nl.suriani.validation.exercise.domain.sensor.events.FirmwareUpdateRequired;
+import nl.suriani.validation.exercise.domain.sensor.events.FirmwareUpdated;
+import nl.suriani.validation.exercise.domain.sensor.events.SensorRegistered;
+import nl.suriani.validation.exercise.domain.shared.DomainEvent;
 import nl.suriani.validation.exercise.domain.shared.FileName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static nl.suriani.validation.exercise.application.usecase.sensor.CheckSensorStatusUseCaseResultCode.*;
@@ -27,11 +35,14 @@ class CheckSensorStatusUseCaseTest {
     @Mock
     private SensorManufacturerGatewayStub sensorManufacturerGateway;
 
+    @Captor
+    private ArgumentCaptor<Sensor> sensorArgumentCaptor;
+
     @InjectMocks
     private CheckSensorStatusUseCase useCase;
 
     @Test
-    void sensorNotRegistered() {
+    void sensorHasNotBeenRegistered() {
         var sensorId = new SensorId("notRegistered");
         var command = new CheckSensorStatusCommand(sensorId);
 
@@ -43,7 +54,7 @@ class CheckSensorStatusUseCaseTest {
     }
 
     @Nested
-    class SensorRegistered {
+    class SensorHasBeenRegistered {
         private final SensorId sensorId = new SensorId();
         private final CheckSensorStatusCommand command = new CheckSensorStatusCommand(sensorId);
 
@@ -67,6 +78,7 @@ class CheckSensorStatusUseCaseTest {
             thenSensorHasBeenLookedUp();
             thenSensorHasBeenSaved1Time();
             thenSensorHasBeenLookedUpAtManufacturer();
+            thenSensorEventsLookLikeThis(SensorRegistered.class);
         }
 
         @Test
@@ -81,6 +93,7 @@ class CheckSensorStatusUseCaseTest {
 
             thenSensorHasBeenLookedUp();
             thenSensorHasBeenSaved2Times();
+            thenSensorEventsLookLikeThis(SensorRegistered.class, FirmwareUpdateRequired.class);
         }
 
         @Test
@@ -96,6 +109,7 @@ class CheckSensorStatusUseCaseTest {
 
             thenSensorHasBeenLookedUp();
             thenSensorHasBeenSaved2Times();
+            thenSensorEventsLookLikeThis(SensorRegistered.class, ConfigurationUpdateRequired.class);
         }
 
         @Test
@@ -113,6 +127,7 @@ class CheckSensorStatusUseCaseTest {
 
             thenSensorHasBeenLookedUp();
             thenSensorHasBeenSaved2Times();
+            thenSensorEventsLookLikeThis(SensorRegistered.class);
         }
 
         private void whenSensorIsNotKnownByManufacturer() {
@@ -155,11 +170,11 @@ class CheckSensorStatusUseCaseTest {
         }
 
         private void thenSensorHasBeenSaved1Time() {
-            verify(sensorRepository, times(1)).save(sensor);
+            verify(sensorRepository, times(1)).save(sensorArgumentCaptor.capture());
         }
 
         private void thenSensorHasBeenSaved2Times() {
-            verify(sensorRepository, times(2)).save(any(Sensor.class));
+            verify(sensorRepository, times(2)).save(sensorArgumentCaptor.capture());
         }
 
         private void thenSensorHasBeenLookedUpAtManufacturer() {
@@ -179,6 +194,12 @@ class CheckSensorStatusUseCaseTest {
         private void thenAnswerIs(CheckSensorStatusUseCaseResult result, CheckSensorStatusUseCaseResultCode expectedCode) {
             assertEquals(expectedCode, result.code());
             assertTrue(result.errors().isEmpty());
+        }
+
+        private void thenSensorEventsLookLikeThis(Class... domainEventsTypes) {
+            var sensor = sensorArgumentCaptor.getValue();
+            assertEquals(domainEventsTypes.length, sensor.events().size());
+            assertArrayEquals(domainEventsTypes, sensor.events().stream().map(DomainEvent::getClass).toList().toArray());
         }
     }
 }

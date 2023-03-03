@@ -39,16 +39,18 @@ public class CheckSensorStatusUseCase {
         }
 
         final var sensorAtManufacturer = maybeSensorAtManufacturer.get();
-        updateSensorAndSave(sensor, sensorAtManufacturer);
 
         if (sensorManufacturerGateway.needsFirmwareUpdate(sensorAtManufacturer)) {
+            updateSensorAndSave(sensor.firmwareUpdateRequired(), sensorAtManufacturer);
             return answer(UPDATE_FIRMWARE);
         };
 
         if (sensorManufacturerGateway.needsConfigurationUpdate(sensorAtManufacturer)) {
+            updateSensorAndSave(sensor.configurationUpdateRequired(), sensorAtManufacturer);
             return answer(UPDATE_CONFIGURATION);
         }
 
+        updateSensorAndSave(sensor, sensorAtManufacturer);
         return answer(NO_ACTION_NEEDED);
     }
 
