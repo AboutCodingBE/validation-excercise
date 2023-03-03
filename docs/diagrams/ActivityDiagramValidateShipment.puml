@@ -1,5 +1,7 @@
 @startuml
 
+start
+
 :Create Shipment;
 
 if (errors?) then (yes)

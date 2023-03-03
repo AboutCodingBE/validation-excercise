@@ -1,0 +1,26 @@
+@startuml
+start
+switch (task type)
+
+case (firmware)
+  :Fetch last firmware;
+
+case (configuration)
+  :Fetch last configuration;
+
+endswitch
+
+if (not found?) then (yes)
+  :Error<Cannot fetch firmware/configuration>;
+  stop
+endif
+
+:Schedule task;
+if (failed?) then (yes)
+  :Answer Error<Failure while scheduling task>;
+  stop
+endif
+
+:Answer TaskScheduled;
+stop
+@enduml

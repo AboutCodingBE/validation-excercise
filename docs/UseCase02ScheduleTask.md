@@ -5,4 +5,4 @@
 ![Class Diagram](images/ClassDiagramScheduleTask.png)
 
 ## Activity diagram
-TODO
+![Activity Diagram](images/ActivityDiagramScheduleTask.png)

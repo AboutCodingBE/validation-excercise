@@ -1,5 +1,7 @@
 @startuml
 
+start
+
 :Find sensor by id;
 
 if (not found?) then (yes)
@@ -16,21 +18,23 @@ if (not found?) then (yes)
   stop
 endif
 
-:Save sensor with new information;
-
-
 switch (Needs update?)
 
 case (yes, firmware)
   :Notify Needs Firmware Update;
+  :Save sensor with new information;
   :Answer Update Firmware;
 
 case (yes, configuration)
   :Notify Needs Configuration Update;
+  :Save sensor with new information;
   :Answer Update Configuration;
 
 case (no)
+:Save sensor with new information;
   :Answer No Action Needed;
+
+
 
 endswitch
 
