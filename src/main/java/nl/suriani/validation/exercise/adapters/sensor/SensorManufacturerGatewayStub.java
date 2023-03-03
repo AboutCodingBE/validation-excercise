@@ -75,4 +75,14 @@ public class SensorManufacturerGatewayStub implements SensorManufacturerGateway 
     public void cancelTask(TaskId taskId) {
         taskDb.remove(taskId);
     }
+
+    @Override
+    public Optional<FileName> getLastFirmwareInformation() {
+        return Optional.of(new FileName("VeryNewFirmware.dat"));
+    }
+
+    @Override
+    public Optional<FileName> getLastConfigurationInformation() {
+        return Optional.of(new FileName("VeryNewConfiguration.cfg"));
+    }
 }

@@ -1,6 +1,7 @@
 package nl.suriani.validation.exercise.application.port.sensor;
 
 import nl.suriani.validation.exercise.domain.sensor.*;
+import nl.suriani.validation.exercise.domain.shared.FileName;
 import nl.suriani.validation.exercise.domain.task.Task;
 import nl.suriani.validation.exercise.domain.task.TaskId;
 
@@ -14,4 +15,6 @@ public interface SensorManufacturerGateway {
     boolean needsFirmwareUpdate(SensorAtManufacturer sensor);
     boolean needsConfigurationUpdate(SensorAtManufacturer sensor);
     void cancelTask(TaskId taskId);
+    Optional<FileName> getLastFirmwareInformation();
+    Optional<FileName> getLastConfigurationInformation();
 }

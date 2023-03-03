@@ -1,25 +1,53 @@
 @startuml
 start
+
+:Fetch sensor;
+
+if (not found?) then (yes)
+  :Answer Sensor not found;
+  stop
+endif
+
+:Fetch sensor at manufacturer;
+
+if (not found?) then (yes)
+  :Answer Sensor not known by manufacturer;
+  stop
+endif
+
+if (already updating?) then (yes)
+  :Answer Sensor is already updating;
+  stop
+endif
+
 switch (task type)
+    case (firmware)
+      :Fetch last firmware;
 
-case (firmware)
-  :Fetch last firmware;
-
-case (configuration)
-  :Fetch last configuration;
+    case (configuration)
+      :Fetch last configuration;
 
 endswitch
 
 if (not found?) then (yes)
-  :Error<Cannot fetch firmware/configuration>;
+  :Notify update failed;
+  :Save sensor;
+  :Answer Error<Cannot fetch firmware/configuration>;
   stop
 endif
 
 :Schedule task;
 if (failed?) then (yes)
+  :Notify update failed;
+  :Save sensor;
   :Answer Error<Failure while scheduling task>;
+
   stop
 endif
+
+:Notify update scheduled;
+:Save sensor;
+:Save task;
 
 :Answer TaskScheduled;
 stop
