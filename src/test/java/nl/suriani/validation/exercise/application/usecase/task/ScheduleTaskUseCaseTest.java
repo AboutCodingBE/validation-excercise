@@ -50,6 +50,16 @@ class ScheduleTaskUseCaseTest {
     }
 
     @Test
+    void sensorIsNotKnownByManufacturer() {
+        var command = givenCommandWithTaskTypeUpdateFirmware();
+        whenSensorHasBeenFetchedAndHasStatus(SensorTasksStatus.IDLE);
+
+        var result = useCase.apply(command);
+
+        thenUpdateHasFailedBecauseSensorIsNotKnownByManufacturer(result);
+    }
+
+    @Test
     void updateLastFirmwareNotFound_error() {
         //var command = givenCommandWithTaskTypeUpdateFirmware();
         //
@@ -83,6 +93,10 @@ class ScheduleTaskUseCaseTest {
 
     private void thenUpdateHasFailedBecauseSensorIsNotFound(ScheduleTaskUseCaseResult result) {
         assertEquals(ScheduleTaskUseCaseResultCode.SENSOR_NOT_FOUND, result.code());
+    }
+
+    private void thenUpdateHasFailedBecauseSensorIsNotKnownByManufacturer(ScheduleTaskUseCaseResult result) {
+        assertEquals(ScheduleTaskUseCaseResultCode.SENSOR_NOT_KNOWN_BY_MANUFACTURER, result.code());
     }
 
     private void whenSensorHasBeenFetchedAndHasStatus(SensorTasksStatus sensorTasksStatus) {

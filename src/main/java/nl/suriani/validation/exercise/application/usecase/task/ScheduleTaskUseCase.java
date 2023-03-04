@@ -12,8 +12,12 @@ public class ScheduleTaskUseCase {
     private SensorManufacturerGateway sensorManufacturerGateway;
 
     public ScheduleTaskUseCaseResult apply(ScheduleTaskCommand command) {
-        sensorRepository.findById(command.sensorId());
-        return answer(ScheduleTaskUseCaseResultCode.SENSOR_NOT_FOUND);
+        var maybeSensor = sensorRepository.findById(command.sensorId());
+        if (maybeSensor.isEmpty()) {
+            return answer(ScheduleTaskUseCaseResultCode.SENSOR_NOT_FOUND);
+        }
+        sensorManufacturerGateway.findSensorById(command.sensorId());
+        return answer(ScheduleTaskUseCaseResultCode.SENSOR_NOT_KNOWN_BY_MANUFACTURER);
     }
 
     private ScheduleTaskUseCaseResult answer(ScheduleTaskUseCaseResultCode code) {
