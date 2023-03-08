@@ -6,7 +6,6 @@ import nl.suriani.validation.exercise.application.port.sensor.SensorAtManufactur
 import nl.suriani.validation.exercise.domain.sensor.*;
 import nl.suriani.validation.exercise.domain.sensor.events.ConfigurationUpdateRequired;
 import nl.suriani.validation.exercise.domain.sensor.events.FirmwareUpdateRequired;
-import nl.suriani.validation.exercise.domain.sensor.events.FirmwareUpdated;
 import nl.suriani.validation.exercise.domain.sensor.events.SensorRegistered;
 import nl.suriani.validation.exercise.domain.shared.DomainEvent;
 import nl.suriani.validation.exercise.domain.shared.FileName;
@@ -19,7 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import static nl.suriani.validation.exercise.application.usecase.sensor.CheckSensorStatusUseCaseResultCode.*;

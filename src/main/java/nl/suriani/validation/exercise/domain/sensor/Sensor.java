@@ -6,7 +6,6 @@ import nl.suriani.validation.exercise.domain.shared.Guards;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public record Sensor(SensorId id,
                      Firmware firmware,
@@ -61,7 +60,7 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor firmwareUpdateScheduled(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
+    public Sensor firmwareUpdateScheduled(Firmware newFirmware) {
         return new Sensor(id,
                 firmware,
                 configuration,
@@ -71,27 +70,17 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor firmwareUpdateNotScheduled(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus, String reason) {
+    public Sensor firmwareUpdateNotScheduled(String reason) {
         return new Sensor(id,
                 firmware,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new FirmwareUpdateNotScheduled(versionOf(firmware), Optional.of(versionOf(newFirmware)), reason))
+                addEvent(new FirmwareUpdateNotScheduled(versionOf(firmware), reason))
         );
     }
 
-    public Sensor firmwareUpdateNotScheduled(SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus, String reason) {
-        return new Sensor(id,
-                firmware,
-                configuration,
-                tasksStatus,
-                activityStatus,
-                addEvent(new FirmwareUpdateNotScheduled(versionOf(firmware), Optional.empty(), reason))
-        );
-    }
-
-    public Sensor firmwareUpdated(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
+    public Sensor firmwareUpdated(Firmware newFirmware) {
         return new Sensor(id,
                 newFirmware,
                 configuration,
@@ -101,7 +90,7 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor firmwareUpdateCancelled(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
+    public Sensor firmwareUpdateCancelled(Firmware newFirmware) {
         return new Sensor(id,
                 firmware,
                 configuration,
@@ -111,8 +100,7 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor firmwareUpdateFailed(Firmware newFirmware, SensorTasksStatus tasksStatus, 
-                                       SensorActivityStatus activityStatus, String reason) {
+    public Sensor firmwareUpdateFailed(Firmware newFirmware, String reason) {
         return new Sensor(id,
                 firmware,
                 configuration,
@@ -132,7 +120,7 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor configurationUpdateScheduled(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
+    public Sensor configurationUpdateScheduled(Firmware newFirmware) {
         return new Sensor(id,
                 firmware,
                 configuration,
@@ -142,27 +130,17 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor configurationUpdateNotScheduled(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus, String reason) {
+    public Sensor configurationUpdateNotScheduled(String reason) {
         return new Sensor(id,
                 firmware,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new ConfigurationUpdateNotScheduled(versionOf(firmware), Optional.of(versionOf(newFirmware)), reason))
+                addEvent(new ConfigurationUpdateNotScheduled(versionOf(firmware), reason))
         );
     }
 
-    public Sensor configurationUpdateNotScheduled(SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus, String reason) {
-        return new Sensor(id,
-                firmware,
-                configuration,
-                tasksStatus,
-                activityStatus,
-                addEvent(new ConfigurationUpdateNotScheduled(versionOf(firmware), Optional.empty(), reason))
-        );
-    }
-
-    public Sensor configurationUpdated(Configuration newConfiguration, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
+    public Sensor configurationUpdated(Configuration newConfiguration) {
         return new Sensor(id,
                 firmware,
                 newConfiguration,
@@ -172,7 +150,7 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor configurationUpdateCancelled(Configuration newConfiguration, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
+    public Sensor configurationUpdateCancelled(Configuration newConfiguration) {
         return new Sensor(id,
                 firmware,
                 configuration,
@@ -182,8 +160,7 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor configurationUpdateFailed(Configuration newConfiguration, SensorTasksStatus tasksStatus,
-                                       SensorActivityStatus activityStatus, String reason) {
+    public Sensor configurationUpdateFailed(Configuration newConfiguration, String reason) {
         return new Sensor(id,
                 firmware,
                 configuration,

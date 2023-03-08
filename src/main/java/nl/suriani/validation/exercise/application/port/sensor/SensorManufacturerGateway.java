@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface SensorManufacturerGateway {
     Optional<SensorAtManufacturer> findSensorById(SensorId sensorId);
     Optional<Task> findTaskBySensorId(SensorId sensorId);
-    Task scheduleConfigurationUpdate(SensorId sensorId);
-    Task scheduleFirmwareUpdate(SensorId sensorId);
+    Task scheduleConfigurationUpdate(SensorId sensorId, FileName fileName);
+    Task scheduleFirmwareUpdate(SensorId sensorId, FileName fileName);
     boolean needsFirmwareUpdate(SensorAtManufacturer sensor);
     boolean needsConfigurationUpdate(SensorAtManufacturer sensor);
     void cancelTask(TaskId taskId);

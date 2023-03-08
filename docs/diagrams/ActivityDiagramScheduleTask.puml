@@ -11,6 +11,7 @@ endif
 :Fetch sensor at manufacturer;
 
 if (not found?) then (yes)
+  :Notify update not scheduled;
   :Answer Sensor not known by manufacturer;
   stop
 endif
@@ -30,7 +31,7 @@ switch (task type)
 endswitch
 
 if (not found?) then (yes)
-  :Notify update failed;
+  :Notify update not scheduled;
   :Save sensor;
   :Answer Error<Cannot fetch firmware/configuration>;
   stop
@@ -38,8 +39,7 @@ endif
 
 :Schedule task;
 if (failed?) then (yes)
-  :Notify update failed;
-  :Save sensor;
+  :Notify update not scheduled;
   :Answer Error<Failure while scheduling task>;
 
   stop

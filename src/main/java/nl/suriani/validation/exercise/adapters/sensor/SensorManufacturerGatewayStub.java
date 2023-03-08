@@ -37,10 +37,10 @@ public class SensorManufacturerGatewayStub implements SensorManufacturerGateway 
     }
 
     @Override
-    public Task scheduleConfigurationUpdate(SensorId sensorId) {
+    public Task scheduleConfigurationUpdate(SensorId sensorId, FileName fileName) {
         var task = new Task(sensorId,
                 new TaskId(),
-                new UpdateFile(new FileName("someCfg.cfg")),
+                new UpdateFile(fileName),
                 TaskType.UPDATE_CONFIGURATION,
                 TaskStatus.PENDING);
 
@@ -49,10 +49,10 @@ public class SensorManufacturerGatewayStub implements SensorManufacturerGateway 
     }
 
     @Override
-    public Task scheduleFirmwareUpdate(SensorId sensorId) {
+    public Task scheduleFirmwareUpdate(SensorId sensorId, FileName fileName) {
         var task = new Task(sensorId,
                 new TaskId(),
-                new UpdateFile(new FileName("someFw.dat")),
+                new UpdateFile(fileName),
                 TaskType.UPDATE_FIRMWARE,
                 TaskStatus.PENDING);
 

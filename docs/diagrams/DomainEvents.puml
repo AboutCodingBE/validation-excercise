@@ -39,7 +39,6 @@ package sensor/events as see {
 
   class FirmwareUpdateNotScheduled {
       -Version oldVersion (1..1)
-      -Version newVersion (1..1)
       -String reason (1..1)
     }
 
@@ -71,7 +70,6 @@ package sensor/events as see {
 
   class ConfigurationUpdateNotScheduled {
     -Version oldVersion (1..1)
-    -Version newVersion (1..1)
     -String reason (1..1)
   }
   
