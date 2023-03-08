@@ -1,18 +1,18 @@
 package nl.suriani.validation.exercise.domain.sensor.events;
 
-import nl.suriani.validation.exercise.domain.sensor.Configuration;
 import nl.suriani.validation.exercise.domain.shared.DomainEvent;
 import nl.suriani.validation.exercise.domain.shared.Guards;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
-public class ConfigurationUpdateFailed extends DomainEvent {
+public class FirmwareUpdateNotScheduled extends DomainEvent {
     private final Version oldVersion;
-    private final Version newVersion;
+    private final Optional<Version> newVersion;
     private final String reason;
 
-    public ConfigurationUpdateFailed(LocalDateTime creationDateTime, Version oldVersion, Version newVersion, String reason) {
-        super(creationDateTime, ConfigurationUpdateFailed.class);
+    public FirmwareUpdateNotScheduled(LocalDateTime creationDateTime, Version oldVersion, Optional<Version> newVersion, String reason) {
+        super(creationDateTime, FirmwareUpdateNotScheduled.class);
 
         Guards.isRequired(oldVersion);
         Guards.isRequired(newVersion);
@@ -23,7 +23,7 @@ public class ConfigurationUpdateFailed extends DomainEvent {
         this.reason = reason;
     }
 
-    public ConfigurationUpdateFailed(Version oldVersion, Version newVersion, String reason) {
+    public FirmwareUpdateNotScheduled(Version oldVersion, Optional<Version> newVersion, String reason) {
         this(LocalDateTime.now(), oldVersion, newVersion, reason);
     }
 }

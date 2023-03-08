@@ -5,13 +5,14 @@ import nl.suriani.validation.exercise.domain.shared.DomainEvent;
 import nl.suriani.validation.exercise.domain.shared.Guards;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class FirmwareUpdateFailed extends DomainEvent {
-    private final FirmwareVersion oldVersion;
-    private final FirmwareVersion newVersion;
+    private final Version oldVersion;
+    private final Version newVersion;
     private final String reason;
 
-    public FirmwareUpdateFailed(LocalDateTime creationDateTime, FirmwareVersion oldVersion, FirmwareVersion newVersion, String reason) {
+    public FirmwareUpdateFailed(LocalDateTime creationDateTime, Version oldVersion, Version newVersion, String reason) {
         super(creationDateTime, FirmwareUpdateFailed.class);
 
         Guards.isRequired(oldVersion);
@@ -23,7 +24,7 @@ public class FirmwareUpdateFailed extends DomainEvent {
         this.reason = reason;
     }
 
-    public FirmwareUpdateFailed(FirmwareVersion oldVersion, FirmwareVersion newVersion, String reason) {
+    public FirmwareUpdateFailed(Version oldVersion, Version newVersion, String reason) {
         this(LocalDateTime.now(), oldVersion, newVersion, reason);
     }
 }

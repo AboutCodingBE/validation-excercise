@@ -1,16 +1,15 @@
 package nl.suriani.validation.exercise.domain.sensor.events;
 
-import nl.suriani.validation.exercise.domain.sensor.Configuration;
 import nl.suriani.validation.exercise.domain.shared.DomainEvent;
 import nl.suriani.validation.exercise.domain.shared.Guards;
 
 import java.time.LocalDateTime;
 
 public class ConfigurationUpdateCancelled extends DomainEvent {
-    private final Configuration oldVersion;
-    private final Configuration newVersion;
+    private final Version oldVersion;
+    private final Version newVersion;
 
-    public ConfigurationUpdateCancelled(LocalDateTime creationDateTime, Configuration oldVersion, Configuration newVersion) {
+    public ConfigurationUpdateCancelled(LocalDateTime creationDateTime, Version oldVersion, Version newVersion) {
         super(creationDateTime, ConfigurationUpdateCancelled.class);
 
         Guards.isRequired(oldVersion);
@@ -20,7 +19,7 @@ public class ConfigurationUpdateCancelled extends DomainEvent {
         this.newVersion = newVersion;
     }
 
-    public ConfigurationUpdateCancelled(Configuration oldVersion, Configuration newVersion) {
+    public ConfigurationUpdateCancelled(Version oldVersion, Version newVersion) {
         this(LocalDateTime.now(), oldVersion, newVersion);
     }
 }

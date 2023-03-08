@@ -5,12 +5,12 @@ import nl.suriani.validation.exercise.domain.shared.Guards;
 
 import java.time.LocalDateTime;
 
-public class FirmwareUpdated extends DomainEvent {
+public class FirmwareUpdateScheduled extends DomainEvent {
     private final Version oldVersion;
     private final Version newVersion;
 
-    public FirmwareUpdated(LocalDateTime creationDateTime, Version oldVersion, Version newVersion) {
-        super(creationDateTime, FirmwareUpdated.class);
+    public FirmwareUpdateScheduled(LocalDateTime creationDateTime, Version oldVersion, Version newVersion) {
+        super(creationDateTime, FirmwareUpdateScheduled.class);
 
         Guards.isRequired(oldVersion);
         Guards.isRequired(newVersion);
@@ -19,7 +19,7 @@ public class FirmwareUpdated extends DomainEvent {
         this.newVersion = newVersion;
     }
 
-    public FirmwareUpdated(Version oldVersion, Version newVersion) {
+    public FirmwareUpdateScheduled(Version oldVersion, Version newVersion) {
         this(LocalDateTime.now(), oldVersion, newVersion);
     }
 }

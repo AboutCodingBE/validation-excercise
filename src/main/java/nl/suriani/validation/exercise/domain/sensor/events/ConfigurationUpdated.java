@@ -7,10 +7,10 @@ import nl.suriani.validation.exercise.domain.shared.Guards;
 import java.time.LocalDateTime;
 
 public class ConfigurationUpdated extends DomainEvent {
-    private final Configuration oldVersion;
-    private final Configuration newVersion;
+    private final Version oldVersion;
+    private final Version newVersion;
 
-    public ConfigurationUpdated(LocalDateTime creationDateTime, Configuration oldVersion, Configuration newVersion) {
+    public ConfigurationUpdated(LocalDateTime creationDateTime, Version oldVersion, Version newVersion) {
         super(creationDateTime, ConfigurationUpdated.class);
 
         Guards.isRequired(oldVersion);
@@ -20,7 +20,7 @@ public class ConfigurationUpdated extends DomainEvent {
         this.newVersion = newVersion;
     }
 
-    public ConfigurationUpdated(Configuration oldVersion, Configuration newVersion) {
+    public ConfigurationUpdated(Version oldVersion, Version newVersion) {
         this(LocalDateTime.now(), oldVersion, newVersion);
     }
 }

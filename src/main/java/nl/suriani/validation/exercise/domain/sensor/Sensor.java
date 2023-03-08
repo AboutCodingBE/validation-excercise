@@ -6,6 +6,7 @@ import nl.suriani.validation.exercise.domain.shared.Guards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public record Sensor(SensorId id,
                      Firmware firmware,
@@ -60,13 +61,43 @@ public record Sensor(SensorId id,
         );
     }
 
+    public Sensor firmwareUpdateScheduled(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
+        return new Sensor(id,
+                firmware,
+                configuration,
+                tasksStatus,
+                activityStatus,
+                addEvent(new FirmwareUpdateScheduled(versionOf(firmware), versionOf(newFirmware)))
+        );
+    }
+
+    public Sensor firmwareUpdateNotScheduled(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus, String reason) {
+        return new Sensor(id,
+                firmware,
+                configuration,
+                tasksStatus,
+                activityStatus,
+                addEvent(new FirmwareUpdateNotScheduled(versionOf(firmware), Optional.of(versionOf(newFirmware)), reason))
+        );
+    }
+
+    public Sensor firmwareUpdateNotScheduled(SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus, String reason) {
+        return new Sensor(id,
+                firmware,
+                configuration,
+                tasksStatus,
+                activityStatus,
+                addEvent(new FirmwareUpdateNotScheduled(versionOf(firmware), Optional.empty(), reason))
+        );
+    }
+
     public Sensor firmwareUpdated(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
         return new Sensor(id,
                 newFirmware,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new FirmwareUpdated(firmware.version(), newFirmware.version()))
+                addEvent(new FirmwareUpdated(versionOf(firmware), versionOf(newFirmware)))
         );
     }
 
@@ -76,7 +107,7 @@ public record Sensor(SensorId id,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new FirmwareUpdateCancelled(firmware.version(), newFirmware.version()))
+                addEvent(new FirmwareUpdateCancelled(versionOf(firmware), versionOf(newFirmware)))
         );
     }
 
@@ -87,7 +118,7 @@ public record Sensor(SensorId id,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new FirmwareUpdateFailed(firmware.version(), newFirmware.version(), reason))
+                addEvent(new FirmwareUpdateFailed(versionOf(firmware), versionOf(newFirmware), reason))
         );
     }
 
@@ -101,13 +132,43 @@ public record Sensor(SensorId id,
         );
     }
 
+    public Sensor configurationUpdateScheduled(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
+        return new Sensor(id,
+                firmware,
+                configuration,
+                tasksStatus,
+                activityStatus,
+                addEvent(new ConfigurationUpdateScheduled(versionOf(firmware), versionOf(newFirmware)))
+        );
+    }
+
+    public Sensor configurationUpdateNotScheduled(Firmware newFirmware, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus, String reason) {
+        return new Sensor(id,
+                firmware,
+                configuration,
+                tasksStatus,
+                activityStatus,
+                addEvent(new ConfigurationUpdateNotScheduled(versionOf(firmware), Optional.of(versionOf(newFirmware)), reason))
+        );
+    }
+
+    public Sensor configurationUpdateNotScheduled(SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus, String reason) {
+        return new Sensor(id,
+                firmware,
+                configuration,
+                tasksStatus,
+                activityStatus,
+                addEvent(new ConfigurationUpdateNotScheduled(versionOf(firmware), Optional.empty(), reason))
+        );
+    }
+
     public Sensor configurationUpdated(Configuration newConfiguration, SensorTasksStatus tasksStatus, SensorActivityStatus activityStatus) {
         return new Sensor(id,
                 firmware,
                 newConfiguration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new ConfigurationUpdated(configuration, newConfiguration))
+                addEvent(new ConfigurationUpdated(versionOf(configuration), versionOf(newConfiguration)))
         );
     }
 
@@ -117,7 +178,7 @@ public record Sensor(SensorId id,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new ConfigurationUpdateCancelled(configuration, newConfiguration))
+                addEvent(new ConfigurationUpdateCancelled(versionOf(configuration), versionOf(newConfiguration)))
         );
     }
 
@@ -128,16 +189,12 @@ public record Sensor(SensorId id,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new ConfigurationUpdateFailed(configuration, newConfiguration, reason))
+                addEvent(new ConfigurationUpdateFailed(versionOf(configuration), versionOf(newConfiguration), reason))
         );
     }
 
     private void checkEvents(List<DomainEvent> events) {
         checkFirstEvent(events);
-
-        var eventTypes = events.stream()
-                .map(DomainEvent::getClass)
-                .toList();
 
         var legalEvents = List.of(SensorRegistered.class,
                         FirmwareUpdated.class,
@@ -168,5 +225,13 @@ public record Sensor(SensorId id,
         var events = new ArrayList<>(this.events);
         events.add(event);
         return List.copyOf(events);
+    }
+    
+    private Version versionOf(Firmware firmware) {
+        return new Version(firmware.version().toString());
+    }
+
+    private Version versionOf(Configuration configuration) {
+        return new Version(configuration.name().toString());
     }
 }

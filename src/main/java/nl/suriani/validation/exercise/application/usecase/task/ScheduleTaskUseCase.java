@@ -16,8 +16,18 @@ public class ScheduleTaskUseCase {
         if (maybeSensor.isEmpty()) {
             return answer(ScheduleTaskUseCaseResultCode.SENSOR_NOT_FOUND);
         }
-        sensorManufacturerGateway.findSensorById(command.sensorId());
-        return answer(ScheduleTaskUseCaseResultCode.SENSOR_NOT_KNOWN_BY_MANUFACTURER);
+
+        var sensor = maybeSensor.get();
+
+        var maybeSensorAtManufacturer = sensorManufacturerGateway.findSensorById(command.sensorId());
+        if (maybeSensorAtManufacturer.isEmpty()) {
+
+            return answer(ScheduleTaskUseCaseResultCode.SENSOR_NOT_KNOWN_BY_MANUFACTURER);
+        }
+
+        var sensorAtManufacturer = maybeSensorAtManufacturer.get();
+
+        return answer(ScheduleTaskUseCaseResultCode.SENSOR_IS_ALREADY_UPDATING);
     }
 
     private ScheduleTaskUseCaseResult answer(ScheduleTaskUseCaseResultCode code) {

@@ -5,6 +5,7 @@ import nl.suriani.validation.exercise.application.port.sensor.SensorManufacturer
 import nl.suriani.validation.exercise.application.port.sensor.SensorRepository;
 import nl.suriani.validation.exercise.application.port.task.TaskRepository;
 import nl.suriani.validation.exercise.domain.sensor.*;
+import nl.suriani.validation.exercise.domain.sensor.events.FirmwareUpdateFailed;
 import nl.suriani.validation.exercise.domain.shared.FileName;
 import nl.suriani.validation.exercise.domain.task.Task;
 import nl.suriani.validation.exercise.domain.task.TaskType;
@@ -60,15 +61,13 @@ class ScheduleTaskUseCaseTest {
     }
 
     @Test
-    void updateLastFirmwareNotFound_error() {
-        //var command = givenCommandWithTaskTypeUpdateFirmware();
-        //
-        //whenLastFirmwareIsNotFound();
-//
-        //var result = useCase.apply(command);
-//
-        //thenUpdateHasFailed(result);
-        //thenSensorIsUpdatedWithEvent(FirmwareUpdateFailed.class);
+    void sensorIsAlreadyUpdating() {
+        var command = givenCommandWithTaskTypeUpdateFirmware();
+        whenSensorHasBeenFetchedAndHasStatus(SensorTasksStatus.UPDATING);
+
+        var result = useCase.apply(command);
+
+        thenUpdateHasFailedBecauseSensorIsNotKnownByManufacturer(result);
     }
 
     private ScheduleTaskCommand givenCommandWithTaskTypeUpdateFirmware() {
@@ -97,6 +96,10 @@ class ScheduleTaskUseCaseTest {
 
     private void thenUpdateHasFailedBecauseSensorIsNotKnownByManufacturer(ScheduleTaskUseCaseResult result) {
         assertEquals(ScheduleTaskUseCaseResultCode.SENSOR_NOT_KNOWN_BY_MANUFACTURER, result.code());
+    }
+
+    private void thenUpdateHasFailedBecauseSensorIsAlreadyUpdating(ScheduleTaskUseCaseResult result) {
+        assertEquals(ScheduleTaskUseCaseResultCode.SENSOR_IS_ALREADY_UPDATING, result.code());
     }
 
     private void whenSensorHasBeenFetchedAndHasStatus(SensorTasksStatus sensorTasksStatus) {
