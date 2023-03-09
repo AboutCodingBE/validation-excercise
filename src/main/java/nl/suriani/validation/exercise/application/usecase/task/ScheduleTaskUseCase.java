@@ -31,7 +31,7 @@ public class ScheduleTaskUseCase {
 
         var maybeSensorAtManufacturer = sensorManufacturerGateway.findSensorById(command.sensorId());
         if (maybeSensorAtManufacturer.isEmpty()) {
-            saveSensorWithNotScheduledEvent(new SaveSensorCommand(sensor, command.taskType()),
+            saveSensorWithUpdateNotScheduledEvent(new SaveSensorCommand(sensor, command.taskType()),
                     "Sensor is not known by manufacturer");
             return answer(ScheduleTaskUseCaseResultCode.SENSOR_NOT_KNOWN_BY_MANUFACTURER);
         }
@@ -39,7 +39,7 @@ public class ScheduleTaskUseCase {
         var sensorAtManufacturer = maybeSensorAtManufacturer.get();
 
         if (sensorAtManufacturer.tasksStatus() == SensorTasksStatus.UPDATING) {
-            saveSensorWithNotScheduledEvent(new SaveSensorCommand(sensor, command.taskType()),
+            saveSensorWithUpdateNotScheduledEvent(new SaveSensorCommand(sensor, command.taskType()),
                     "Sensor is already updating");
             return answer(ScheduleTaskUseCaseResultCode.SENSOR_IS_ALREADY_UPDATING);
         }
@@ -47,7 +47,7 @@ public class ScheduleTaskUseCase {
         var maybeFileName = getUpdateInformation(command);
         if (maybeFileName.isEmpty()) {
             var error = command.taskType() + " task not scheduled: update information not available";
-            saveSensorWithNotScheduledEvent(new SaveSensorCommand(sensor, command.taskType()), error);
+            saveSensorWithUpdateNotScheduledEvent(new SaveSensorCommand(sensor, command.taskType()), error);
             return answerError(error);
         }
 
@@ -55,19 +55,29 @@ public class ScheduleTaskUseCase {
         try {
             scheduleTask(command, fileName);
         } catch (Exception exception) {
-
+            var error = command.taskType() + " task not scheduled: update information not available";
+            saveSensorWithUpdateNotScheduledEvent(new SaveSensorCommand(sensor, command.taskType()), error);
+            return answerError(error);
         }
 
-        var error = command.taskType() + " task not scheduled: update information not available";
-        saveSensorWithNotScheduledEvent(new SaveSensorCommand(sensor, command.taskType()), error);
-        return answerError(error);
+        saveSensorWithUpdateScheduledEvent(new SaveSensorCommand(sensor, command.taskType()), fileName);
+        return answer(ScheduleTaskUseCaseResultCode.TASK_SCHEDULED);
     }
 
-    private void saveSensorWithNotScheduledEvent(SaveSensorCommand command, String reason) {
+    private void saveSensorWithUpdateNotScheduledEvent(SaveSensorCommand command, String reason) {
         var sensor = command.sensor;
         switch (command.taskType()) {
             case UPDATE_FIRMWARE -> sensorRepository.save(sensor.firmwareUpdateNotScheduled(reason));
             case UPDATE_CONFIGURATION -> sensorRepository.save(sensor.configurationUpdateNotScheduled(reason));
+            default -> throw new IllegalStateException();
+        }
+    }
+
+    private void saveSensorWithUpdateScheduledEvent(SaveSensorCommand command, FileName fileName) {
+        var sensor = command.sensor;
+        switch (command.taskType()) {
+            case UPDATE_FIRMWARE -> sensorRepository.save(sensor.firmwareUpdateScheduled(fileName));
+            case UPDATE_CONFIGURATION -> sensorRepository.save(sensor.configurationUpdateScheduled(fileName));
             default -> throw new IllegalStateException();
         }
     }

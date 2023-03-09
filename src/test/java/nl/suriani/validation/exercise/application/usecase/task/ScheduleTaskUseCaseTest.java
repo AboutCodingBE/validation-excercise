@@ -6,6 +6,7 @@ import nl.suriani.validation.exercise.application.port.sensor.SensorRepository;
 import nl.suriani.validation.exercise.application.port.task.TaskRepository;
 import nl.suriani.validation.exercise.domain.sensor.*;
 import nl.suriani.validation.exercise.domain.sensor.events.ConfigurationUpdateNotScheduled;
+import nl.suriani.validation.exercise.domain.sensor.events.ConfigurationUpdateScheduled;
 import nl.suriani.validation.exercise.domain.sensor.events.FirmwareUpdateNotScheduled;
 import nl.suriani.validation.exercise.domain.sensor.events.FirmwareUpdateScheduled;
 import nl.suriani.validation.exercise.domain.shared.FileName;
@@ -16,6 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.*;
+import org.mockito.exceptions.verification.WantedButNotInvoked;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -107,10 +109,17 @@ class ScheduleTaskUseCaseTest {
     }
 
     @ParameterizedTest
-    @MethodSource("commandAndUpdateNotScheduledEventProvider")
+    @MethodSource("commandAndUpdateScheduledEventProvider")
     void taskIsScheduledSuccessfully(ScheduleTaskCommand command, Class generatedEvent) {
-        // TODO change domain events to make use of fileName instead of newVersion.
-        throw new UnsupportedOperationException("TODO");
+        whenSensorHasBeenFetchedAndHasStatus(SensorTasksStatus.IDLE);
+        whenSensorAtManufacturerHasBeenFetchedAndHasStatus(SensorTasksStatus.IDLE);
+        whenEitherLastFirmwareOrLastConfigurationIsFound();
+
+        var result = useCase.apply(command);
+
+        thenResultCodeIsTaskScheduled(result);
+        thenTheTaskHasBeenScheduled(command.taskType());
+        thenSensorIsUpdatedWithEvent(generatedEvent);
     }
 
     private static Stream<Arguments> commandAndUpdateNotScheduledEventProvider() {
@@ -123,7 +132,7 @@ class ScheduleTaskUseCaseTest {
     private static Stream<Arguments> commandAndUpdateScheduledEventProvider() {
         return Stream.of(
                 Arguments.of(givenCommandWithTaskTypeUpdateFirmware(), FirmwareUpdateScheduled.class),
-                Arguments.of(givenCommandWithTaskTypeUpdateConfiguration(), FirmwareUpdateScheduled.class)
+                Arguments.of(givenCommandWithTaskTypeUpdateConfiguration(), ConfigurationUpdateScheduled.class)
         );
     }
 
@@ -200,10 +209,36 @@ class ScheduleTaskUseCaseTest {
         assertEquals(ScheduleTaskUseCaseResultCode.ERROR, result.code());
     }
 
+    private void thenResultCodeIsTaskScheduled(ScheduleTaskUseCaseResult result) {
+        assertEquals(ScheduleTaskUseCaseResultCode.TASK_SCHEDULED, result.code());
+    }
+
     private void thenSensorIsUpdatedWithEvent(Class clazz) {
         verify(sensorRepository).save(sensorArgumentCaptor.capture());
 
         var sensor = sensorArgumentCaptor.getValue();
         assertEquals(clazz, sensor.events().get(sensor.events().size() -1).getClass());
+    }
+
+    private void thenTheTaskHasBeenScheduled(TaskType taskType) {
+        var scheduledFirmwareUpdate = verificationSucceeds(() ->
+                verify(sensorManufacturerGateway).scheduleFirmwareUpdate(any(), any()));
+
+        var scheduledConfigurationUpdate = verificationSucceeds(() ->
+                verify(sensorManufacturerGateway).scheduleConfigurationUpdate(any(), any()));
+
+        switch (taskType) {
+            case UPDATE_FIRMWARE -> assertTrue(scheduledFirmwareUpdate);
+            case UPDATE_CONFIGURATION -> assertTrue(scheduledConfigurationUpdate);
+        }
+    }
+
+    private boolean verificationSucceeds(Runnable verification) {
+        try {
+            verification.run();
+            return true;
+        } catch (WantedButNotInvoked wantedButNotInvoked) {
+            return false;
+        }
     }
 }

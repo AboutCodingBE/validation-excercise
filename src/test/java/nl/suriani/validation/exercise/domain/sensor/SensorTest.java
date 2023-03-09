@@ -9,7 +9,7 @@ class SensorTest {
 
     @Test
     void sensorRegistered() {
-        assertDoesNotThrow(() -> givenRegisteredSensor());
+        assertDoesNotThrow(this::givenRegisteredSensor);
     }
 
     @Test
