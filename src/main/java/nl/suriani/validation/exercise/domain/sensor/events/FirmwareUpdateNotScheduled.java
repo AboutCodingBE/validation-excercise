@@ -6,20 +6,20 @@ import nl.suriani.validation.exercise.domain.shared.Guards;
 import java.time.LocalDateTime;
 
 public class FirmwareUpdateNotScheduled extends DomainEvent {
-    private final Version oldVersion;
+    private final Version version;
     private final String reason;
 
-    public FirmwareUpdateNotScheduled(LocalDateTime creationDateTime, Version oldVersion, String reason) {
+    public FirmwareUpdateNotScheduled(LocalDateTime creationDateTime, Version version, String reason) {
         super(creationDateTime, FirmwareUpdateNotScheduled.class);
 
-        Guards.isRequired(oldVersion);
+        Guards.isRequired(version);
         Guards.isRequired(reason);
 
-        this.oldVersion = oldVersion;
+        this.version = version;
         this.reason = reason;
     }
 
-    public FirmwareUpdateNotScheduled(Version oldVersion, String reason) {
-        this(LocalDateTime.now(), oldVersion, reason);
+    public FirmwareUpdateNotScheduled(Version version, String reason) {
+        this(LocalDateTime.now(), version, reason);
     }
 }

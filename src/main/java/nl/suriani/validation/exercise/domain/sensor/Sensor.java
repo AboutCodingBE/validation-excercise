@@ -2,6 +2,7 @@ package nl.suriani.validation.exercise.domain.sensor;
 
 import nl.suriani.validation.exercise.domain.sensor.events.*;
 import nl.suriani.validation.exercise.domain.shared.DomainEvent;
+import nl.suriani.validation.exercise.domain.shared.FileName;
 import nl.suriani.validation.exercise.domain.shared.Guards;
 
 import java.util.ArrayList;
@@ -60,13 +61,13 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor firmwareUpdateScheduled(Firmware newFirmware) {
+    public Sensor firmwareUpdateScheduled(FileName fileName) {
         return new Sensor(id,
                 firmware,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new FirmwareUpdateScheduled(versionOf(firmware), versionOf(newFirmware)))
+                addEvent(new FirmwareUpdateScheduled(versionOf(firmware), fileName))
         );
     }
 
@@ -80,33 +81,33 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor firmwareUpdated(Firmware newFirmware) {
-        return new Sensor(id,
-                newFirmware,
-                configuration,
-                tasksStatus,
-                activityStatus,
-                addEvent(new FirmwareUpdated(versionOf(firmware), versionOf(newFirmware)))
-        );
-    }
-
-    public Sensor firmwareUpdateCancelled(Firmware newFirmware) {
+    public Sensor firmwareUpdated(FileName fileName) {
         return new Sensor(id,
                 firmware,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new FirmwareUpdateCancelled(versionOf(firmware), versionOf(newFirmware)))
+                addEvent(new FirmwareUpdated(versionOf(firmware), fileName))
         );
     }
 
-    public Sensor firmwareUpdateFailed(Firmware newFirmware, String reason) {
+    public Sensor firmwareUpdateCancelled(FileName fileName) {
         return new Sensor(id,
                 firmware,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new FirmwareUpdateFailed(versionOf(firmware), versionOf(newFirmware), reason))
+                addEvent(new FirmwareUpdateCancelled(versionOf(firmware), fileName))
+        );
+    }
+
+    public Sensor firmwareUpdateFailed(FileName fileName, String reason) {
+        return new Sensor(id,
+                firmware,
+                configuration,
+                tasksStatus,
+                activityStatus,
+                addEvent(new FirmwareUpdateFailed(versionOf(firmware), fileName, reason))
         );
     }
 
@@ -120,13 +121,13 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor configurationUpdateScheduled(Firmware newFirmware) {
+    public Sensor configurationUpdateScheduled(FileName fileName) {
         return new Sensor(id,
                 firmware,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new ConfigurationUpdateScheduled(versionOf(firmware), versionOf(newFirmware)))
+                addEvent(new ConfigurationUpdateScheduled(versionOf(firmware), fileName))
         );
     }
 
@@ -140,33 +141,33 @@ public record Sensor(SensorId id,
         );
     }
 
-    public Sensor configurationUpdated(Configuration newConfiguration) {
-        return new Sensor(id,
-                firmware,
-                newConfiguration,
-                tasksStatus,
-                activityStatus,
-                addEvent(new ConfigurationUpdated(versionOf(configuration), versionOf(newConfiguration)))
-        );
-    }
-
-    public Sensor configurationUpdateCancelled(Configuration newConfiguration) {
+    public Sensor configurationUpdated(FileName fileName) {
         return new Sensor(id,
                 firmware,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new ConfigurationUpdateCancelled(versionOf(configuration), versionOf(newConfiguration)))
+                addEvent(new ConfigurationUpdated(versionOf(configuration), fileName))
         );
     }
 
-    public Sensor configurationUpdateFailed(Configuration newConfiguration, String reason) {
+    public Sensor configurationUpdateCancelled(FileName fileName) {
         return new Sensor(id,
                 firmware,
                 configuration,
                 tasksStatus,
                 activityStatus,
-                addEvent(new ConfigurationUpdateFailed(versionOf(configuration), versionOf(newConfiguration), reason))
+                addEvent(new ConfigurationUpdateCancelled(versionOf(configuration), fileName))
+        );
+    }
+
+    public Sensor configurationUpdateFailed(FileName fileName, String reason) {
+        return new Sensor(id,
+                firmware,
+                configuration,
+                tasksStatus,
+                activityStatus,
+                addEvent(new ConfigurationUpdateFailed(versionOf(configuration), fileName, reason))
         );
     }
 

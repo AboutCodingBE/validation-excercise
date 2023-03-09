@@ -15,7 +15,7 @@ class SensorTest {
     @Test
     void sensorRegisteredThenFirmwareUpdated() {
         assertDoesNotThrow(() -> givenRegisteredSensor()
-                .firmwareUpdated(new Firmware(new FirmwareVersion(1, 2, 2023, 4))));
+                .firmwareUpdated(new FileName("bla")));
     }
 
     // TODO continue
