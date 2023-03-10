@@ -1,0 +1,49 @@
+@startuml
+
+package application/usecase/sensor {
+  class UpdateTaskStatusCommand {
+    -SensorId SensorId (1..1)
+  }
+
+  class UpdateTaskStatusUseCase {
+    -SensorManufacturerGateway sensorManufacturerGateway (1..1)
+    -SensorRepository sensorRepository (1..1)
+    -TaskRepository taskRepository (1..1)
+  }
+
+  class UpdateTaskStatusUseCaseResult {
+    -UpdateTaskStatusUseCaseResultCode code (1..1)
+    -String errors (0..n)
+  }
+
+  enum UpdateTaskStatusUseCaseResultCode {
+    NOT_REGISTERED,
+    NO_ACTION_NEEDED,
+    CONFIGURATION_UPDATE_REQUIRED,
+    FIRMWARE_UPDATE_REQUIRED,
+    ERROR
+  }
+
+  UpdateTaskStatusUseCase -right-> UpdateTaskStatusCommand
+  UpdateTaskStatusUseCase -left-> UpdateTaskStatusUseCaseResult
+
+  UpdateTaskStatusUseCaseResult *-down- UpdateTaskStatusUseCaseResultCode
+}
+
+package application/port/sensor {
+    interface SensorManufacturerGateway
+    interface SensorRepository
+}
+
+package application/port/task {
+    interface TaskRepository
+}
+
+package domain/sensor {
+  class SensorId
+}
+
+UpdateTaskStatusCommand o-up- SensorId
+UpdateTaskStatusUseCase o-up- SensorManufacturerGateway
+UpdateTaskStatusUseCase o-up- SensorRepository
+@enduml
