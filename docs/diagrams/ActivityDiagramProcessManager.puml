@@ -1,0 +1,55 @@
+@startuml
+
+|User|
+start
+:Request shipment validation;
+
+|ProcessManager|
+:Trigger ValidateShipmentUseCase;
+
+|ValidateShipmentUseCase|
+:Validate shipment;
+
+|ProcessManager|
+repeat
+:Trigger UpdateSensorStatusUseCase;
+note right
+Schedule every x minutes unless ongoing tasks are associated
+end note
+
+|UpdateSensorStatusUseCase|
+:Update sensor status;
+if (Update needed?) then (yes)
+:Notify update required;
+else (no)
+stop
+endif
+
+
+|ProcessManager|
+:Trigger ScheduleTaskUseCase;
+
+|ScheduleTaskUseCase|
+:Schedule Task;
+if (Succeeded?) then (yes)
+
+else (no)
+stop
+endif
+
+|ProcessManager|
+:Trigger UpdateTaskStatusUseCase;
+note right
+Schedule every x minutes until task is in (Completed, Error, Cancelled)
+end note
+
+|UpdateTaskStatusUseCase|
+:Update task status;
+
+|ProcessManager|
+repeat while (Shipment still registered?)
+note right
+Restart the loop from Trigger UpdateSensorStatusUseCase
+end note
+
+@enduml
