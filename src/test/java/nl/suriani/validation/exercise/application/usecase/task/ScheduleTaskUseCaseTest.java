@@ -10,8 +10,7 @@ import nl.suriani.validation.exercise.domain.sensor.events.ConfigurationUpdateSc
 import nl.suriani.validation.exercise.domain.sensor.events.FirmwareUpdateNotScheduled;
 import nl.suriani.validation.exercise.domain.sensor.events.FirmwareUpdateScheduled;
 import nl.suriani.validation.exercise.domain.shared.FileName;
-import nl.suriani.validation.exercise.domain.task.Task;
-import nl.suriani.validation.exercise.domain.task.TaskType;
+import nl.suriani.validation.exercise.domain.task.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -114,12 +113,14 @@ class ScheduleTaskUseCaseTest {
         whenSensorHasBeenFetchedAndHasStatus(SensorTasksStatus.IDLE);
         whenSensorAtManufacturerHasBeenFetchedAndHasStatus(SensorTasksStatus.IDLE);
         whenEitherLastFirmwareOrLastConfigurationIsFound();
+        whenSchedulingIsSuccessful(command.taskType());
 
         var result = useCase.apply(command);
 
         thenResultCodeIsTaskScheduled(result);
         thenTheTaskHasBeenScheduled(command.taskType());
         thenSensorIsUpdatedWithEvent(generatedEvent);
+        thenTheTaskHasBeenSavedInternally(command.taskType());
     }
 
     private static Stream<Arguments> commandAndUpdateNotScheduledEventProvider() {
@@ -192,6 +193,18 @@ class ScheduleTaskUseCaseTest {
                 .thenThrow(new RuntimeException("boom!"));
     }
 
+    private void whenSchedulingIsSuccessful(TaskType taskType) {
+        var task = new Task(new SensorId(), new TaskId(), new UpdateFile(new FileName("bla")),
+                taskType, TaskStatus.PENDING);
+
+        switch (taskType) {
+            case UPDATE_FIRMWARE -> when(sensorManufacturerGateway.scheduleFirmwareUpdate(any(), any()))
+                    .thenReturn(task);
+            case UPDATE_CONFIGURATION -> when(sensorManufacturerGateway.scheduleConfigurationUpdate(any(), any()))
+                    .thenReturn(task);
+        }
+    }
+
     private void thenUpdateHasNotBeenScheduledBecauseSensorIsNotFound(ScheduleTaskUseCaseResult result) {
         assertEquals(ScheduleTaskUseCaseResultCode.SENSOR_NOT_FOUND, result.code());
         verify(sensorRepository, times(0)).save(any());
@@ -231,6 +244,13 @@ class ScheduleTaskUseCaseTest {
             case UPDATE_FIRMWARE -> assertTrue(scheduledFirmwareUpdate);
             case UPDATE_CONFIGURATION -> assertTrue(scheduledConfigurationUpdate);
         }
+    }
+
+    private void thenTheTaskHasBeenSavedInternally(TaskType taskType) {
+        verify(taskRepository, only()).save(taskArgumentCaptor.capture());
+
+        var task = taskArgumentCaptor.getValue();
+        assertEquals(taskType, task.type());
     }
 
     private boolean verificationSucceeds(Runnable verification) {

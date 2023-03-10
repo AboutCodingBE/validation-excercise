@@ -1,4 +1,4 @@
-package nl.suriani.validation.exercise.adapters;
+package nl.suriani.validation.exercise.adapters.task;
 
 import nl.suriani.validation.exercise.application.port.task.TaskRepository;
 import nl.suriani.validation.exercise.domain.task.Task;

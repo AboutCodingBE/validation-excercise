@@ -1,31 +1,31 @@
 @startuml
 
 package application/usecase/sensor {
-  class CheckSensorStatusCommand {
+  class UpdateSensorStatusCommand {
     -SensorId SensorId (1..1)
   }
 
-  class CheckSensorStatusUseCase {
+  class UpdateSensorStatusUseCase {
     -SensorManufacturerGateway sensorManufacturerGateway (1..1)
   }
 
-  class CheckSensorStatusUseCaseResult {
-    -CheckSensorStatusUseCaseResultCode code (1..1)
+  class UpdateSensorStatusUseCaseResult {
+    -UpdateSensorStatusUseCaseResultCode code (1..1)
     -String errors (0..n)
   }
 
-  enum CheckSensorStatusUseCaseResultCode {
+  enum UpdateSensorStatusUseCaseResultCode {
     NOT_REGISTERED,
     NO_ACTION_NEEDED,
-    UPDATE_CONFIGURATION,
-    UPDATE_FIRMWARE,
+    CONFIGURATION_UPDATE_REQUIRED,
+    FIRMWARE_UPDATE_REQUIRED,
     ERROR
   }
 
-  CheckSensorStatusUseCase -right-> CheckSensorStatusCommand
-  CheckSensorStatusUseCase -left-> CheckSensorStatusUseCaseResult
+  UpdateSensorStatusUseCase -right-> UpdateSensorStatusCommand
+  UpdateSensorStatusUseCase -left-> UpdateSensorStatusUseCaseResult
 
-  CheckSensorStatusUseCaseResult *-down- CheckSensorStatusUseCaseResultCode
+  UpdateSensorStatusUseCaseResult *-down- UpdateSensorStatusUseCaseResultCode
 }
 
 package application/port/sensor {
@@ -37,7 +37,7 @@ package domain/sensor {
   class SensorId
 }
 
-CheckSensorStatusCommand o-up- SensorId
-CheckSensorStatusUseCase o-up- SensorManufacturerGateway
-CheckSensorStatusUseCase o-up- SensorRepository
+UpdateSensorStatusCommand o-up- SensorId
+UpdateSensorStatusUseCase o-up- SensorManufacturerGateway
+UpdateSensorStatusUseCase o-up- SensorRepository
 @enduml

@@ -20,12 +20,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static nl.suriani.validation.exercise.application.usecase.sensor.CheckSensorStatusUseCaseResultCode.*;
+import static nl.suriani.validation.exercise.application.usecase.sensor.UpdateSensorStatusUseCaseResultCode.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CheckSensorStatusUseCaseTest {
+class UpdateSensorStatusUseCaseTest {
 
     @Mock
     private SensorRepositoryStub sensorRepository;
@@ -37,12 +37,12 @@ class CheckSensorStatusUseCaseTest {
     private ArgumentCaptor<Sensor> sensorArgumentCaptor;
 
     @InjectMocks
-    private CheckSensorStatusUseCase useCase;
+    private UpdateSensorStatusUseCase useCase;
 
     @Test
     void sensorHasNotBeenRegistered() {
         var sensorId = new SensorId("notRegistered");
-        var command = new CheckSensorStatusCommand(sensorId);
+        var command = new UpdateSensorStatusCommand(sensorId);
 
         var result = useCase.apply(command);
 
@@ -54,7 +54,7 @@ class CheckSensorStatusUseCaseTest {
     @Nested
     class SensorHasBeenRegistered {
         private final SensorId sensorId = new SensorId();
-        private final CheckSensorStatusCommand command = new CheckSensorStatusCommand(sensorId);
+        private final UpdateSensorStatusCommand command = new UpdateSensorStatusCommand(sensorId);
 
         private final Sensor sensor = Sensor.registered(sensorId, new Firmware(new FirmwareVersion(1, 1, 2020, 1)),
                 new Configuration(new FileName("someOldCfg.cfg")),
@@ -87,7 +87,7 @@ class CheckSensorStatusUseCaseTest {
 
             var result = whenSensorStatusIsChecked();
 
-            thenAnswerIs(result, UPDATE_FIRMWARE);
+            thenAnswerIs(result, FIRMWARE_UPDATE_REQUIRED);
 
             thenSensorHasBeenLookedUp();
             thenSensorHasBeenSaved2Times();
@@ -103,7 +103,7 @@ class CheckSensorStatusUseCaseTest {
 
             var result = whenSensorStatusIsChecked();
 
-            thenAnswerIs(result, UPDATE_CONFIGURATION);
+            thenAnswerIs(result, CONFIGURATION_UPDATE_REQUIRED);
 
             thenSensorHasBeenLookedUp();
             thenSensorHasBeenSaved2Times();
@@ -163,7 +163,7 @@ class CheckSensorStatusUseCaseTest {
                     .thenReturn(true);
         }
 
-        private CheckSensorStatusUseCaseResult whenSensorStatusIsChecked() {
+        private UpdateSensorStatusUseCaseResult whenSensorStatusIsChecked() {
             return useCase.apply(command);
         }
 
@@ -183,13 +183,13 @@ class CheckSensorStatusUseCaseTest {
             verify(sensorRepository, times(1)).findById(sensorId);
         }
 
-        private void thenAnswerContainsErrorSensorNotKnownByManufacturer(CheckSensorStatusUseCaseResult result) {
+        private void thenAnswerContainsErrorSensorNotKnownByManufacturer(UpdateSensorStatusUseCaseResult result) {
             assertEquals(ERROR, result.code());
             assertFalse(result.errors().isEmpty());
             assertEquals("Sensor not known by manufacturer", result.errors().get(0));
         }
 
-        private void thenAnswerIs(CheckSensorStatusUseCaseResult result, CheckSensorStatusUseCaseResultCode expectedCode) {
+        private void thenAnswerIs(UpdateSensorStatusUseCaseResult result, UpdateSensorStatusUseCaseResultCode expectedCode) {
             assertEquals(expectedCode, result.code());
             assertTrue(result.errors().isEmpty());
         }

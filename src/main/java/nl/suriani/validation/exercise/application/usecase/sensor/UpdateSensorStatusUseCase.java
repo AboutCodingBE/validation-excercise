@@ -7,20 +7,20 @@ import nl.suriani.validation.exercise.domain.sensor.Sensor;
 
 import java.util.List;
 
-import static nl.suriani.validation.exercise.application.usecase.sensor.CheckSensorStatusUseCaseResultCode.*;
+import static nl.suriani.validation.exercise.application.usecase.sensor.UpdateSensorStatusUseCaseResultCode.*;
 
-public class CheckSensorStatusUseCase {
+public class UpdateSensorStatusUseCase {
 
     private final SensorRepository sensorRepository;
     private final SensorManufacturerGateway sensorManufacturerGateway;
     private static final UpdateSensorFunction UPDATE_SENSOR_FUNCTION = new UpdateSensorFunction();
 
-    public CheckSensorStatusUseCase(SensorRepository sensorRepository, SensorManufacturerGateway sensorManufacturerGateway) {
+    public UpdateSensorStatusUseCase(SensorRepository sensorRepository, SensorManufacturerGateway sensorManufacturerGateway) {
         this.sensorRepository = sensorRepository;
         this.sensorManufacturerGateway = sensorManufacturerGateway;
     }
 
-    public CheckSensorStatusUseCaseResult apply(CheckSensorStatusCommand command) {
+    public UpdateSensorStatusUseCaseResult apply(UpdateSensorStatusCommand command) {
         var sensorId = command.sensorId();
         var maybeSensor = sensorRepository.findById(sensorId);
 
@@ -42,12 +42,12 @@ public class CheckSensorStatusUseCase {
 
         if (sensorManufacturerGateway.needsFirmwareUpdate(sensorAtManufacturer)) {
             updateSensorAndSave(sensor.firmwareUpdateRequired(), sensorAtManufacturer);
-            return answer(UPDATE_FIRMWARE);
+            return answer(FIRMWARE_UPDATE_REQUIRED);
         };
 
         if (sensorManufacturerGateway.needsConfigurationUpdate(sensorAtManufacturer)) {
             updateSensorAndSave(sensor.configurationUpdateRequired(), sensorAtManufacturer);
-            return answer(UPDATE_CONFIGURATION);
+            return answer(CONFIGURATION_UPDATE_REQUIRED);
         }
 
         updateSensorAndSave(sensor, sensorAtManufacturer);
@@ -59,12 +59,12 @@ public class CheckSensorStatusUseCase {
         sensorRepository.save(updatedSensor);
     }
 
-    private static CheckSensorStatusUseCaseResult answer(CheckSensorStatusUseCaseResultCode updateFirmware, List<String> errors) {
-        return new CheckSensorStatusUseCaseResult(updateFirmware, errors);
+    private static UpdateSensorStatusUseCaseResult answer(UpdateSensorStatusUseCaseResultCode updateFirmware, List<String> errors) {
+        return new UpdateSensorStatusUseCaseResult(updateFirmware, errors);
     }
 
-    private static CheckSensorStatusUseCaseResult answer(CheckSensorStatusUseCaseResultCode updateFirmware) {
-        return new CheckSensorStatusUseCaseResult(updateFirmware, List.of());
+    private static UpdateSensorStatusUseCaseResult answer(UpdateSensorStatusUseCaseResultCode updateFirmware) {
+        return new UpdateSensorStatusUseCaseResult(updateFirmware, List.of());
     }
 
     private void saveSensorAsItIsToRefreshLastUpdatedMetadata(Sensor sensor) {

@@ -34,10 +34,6 @@ package application/port/sensor {
     interface SensorRepository
 }
 
-package application/port/task {
-    interface TaskRepository
-}
-
 package domain/sensor {
   class SensorId
 }
@@ -50,5 +46,4 @@ ScheduleTaskCommand o-up- SensorId
 ScheduleTaskCommand o-right- TaskType
 ScheduleTaskUseCase o-up- SensorManufacturerGateway
 ScheduleTaskUseCase o-up- SensorRepository
-ScheduleTaskUseCase o-down-- TaskRepository
 @enduml

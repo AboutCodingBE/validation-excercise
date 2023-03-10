@@ -6,6 +6,7 @@ import nl.suriani.validation.exercise.application.port.task.TaskRepository;
 import nl.suriani.validation.exercise.domain.sensor.Sensor;
 import nl.suriani.validation.exercise.domain.sensor.SensorTasksStatus;
 import nl.suriani.validation.exercise.domain.shared.FileName;
+import nl.suriani.validation.exercise.domain.task.Task;
 import nl.suriani.validation.exercise.domain.task.TaskType;
 
 import java.util.Optional;
@@ -53,15 +54,15 @@ public class ScheduleTaskUseCase {
 
         var fileName = maybeFileName.get();
         try {
-            scheduleTask(command, fileName);
+            var task = scheduleTask(command, fileName);
+            taskRepository.save(task);
+            saveSensorWithUpdateScheduledEvent(new SaveSensorCommand(sensor, command.taskType()), fileName);
+            return answer(ScheduleTaskUseCaseResultCode.TASK_SCHEDULED);
         } catch (Exception exception) {
             var error = command.taskType() + " task not scheduled: update information not available";
             saveSensorWithUpdateNotScheduledEvent(new SaveSensorCommand(sensor, command.taskType()), error);
             return answerError(error);
         }
-
-        saveSensorWithUpdateScheduledEvent(new SaveSensorCommand(sensor, command.taskType()), fileName);
-        return answer(ScheduleTaskUseCaseResultCode.TASK_SCHEDULED);
     }
 
     private void saveSensorWithUpdateNotScheduledEvent(SaveSensorCommand command, String reason) {
@@ -89,12 +90,11 @@ public class ScheduleTaskUseCase {
         };
     }
 
-    private void scheduleTask(ScheduleTaskCommand command, FileName fileName) {
-        switch (command.taskType()) {
+    private Task scheduleTask(ScheduleTaskCommand command, FileName fileName) {
+        return switch (command.taskType()) {
             case UPDATE_FIRMWARE -> sensorManufacturerGateway.scheduleFirmwareUpdate(command.sensorId(), fileName);
             case UPDATE_CONFIGURATION -> sensorManufacturerGateway.scheduleConfigurationUpdate(command.sensorId(), fileName);
-            default -> throw new IllegalStateException();
-        }
+        };
     }
 
     private ScheduleTaskUseCaseResult answer(ScheduleTaskUseCaseResultCode code) {

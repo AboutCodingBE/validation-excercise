@@ -1,0 +1,49 @@
+@startuml
+
+package application/usecase/sensor {
+  class UpdateTaskStatusCommand {
+    -SensorId SensorId (1..1)
+    -TaskType taskType (1..1)
+  }
+
+  class UpdateTaskStatusUseCase {
+    -SensorRepository sensorRepository (1..1)
+    -SensorManufacturerGateway sensorManufacturerGateway (1..1)
+    -TaskRepository taskRepository (1..1)
+  }
+
+  class UpdateTaskStatusUseCaseResult {
+    -UpdateTaskStatusUseCaseResultCode code (1..1)
+    -TaskId taskId (0..1)
+    -String error (0..1)
+  }
+
+  enum UpdateTaskStatusUseCaseResultCode {
+    DONE,
+    ERROR
+  }
+
+  UpdateTaskStatusUseCase -right-> UpdateTaskStatusCommand
+  UpdateTaskStatusUseCase -left-> UpdateTaskStatusUseCaseResult
+
+  UpdateTaskStatusUseCaseResult *-down- UpdateTaskStatusUseCaseResultCode
+}
+
+package application/port/sensor {
+    interface SensorManufacturerGateway
+    interface SensorRepository
+}
+
+package domain/sensor {
+  class SensorId
+}
+
+package domain/task {
+  class TaskType
+}
+
+UpdateTaskStatusCommand o-up- SensorId
+UpdateTaskStatusCommand o-right- TaskType
+UpdateTaskStatusUseCase o-up- SensorManufacturerGateway
+UpdateTaskStatusUseCase o-up- SensorRepository
+@enduml

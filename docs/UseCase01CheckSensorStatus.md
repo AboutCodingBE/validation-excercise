@@ -2,7 +2,7 @@
 
 # Check Sensor Status Use Case
 ## Class diagram
-![Domain model](images/ClassDiagramCheckSensorStatus.png)
+![Domain model](images/ClassDiagramUpdateSensorStatus.png)
 
 ## Activity diagram
-![Activity](images/ActivityDiagramCheckSensorStatus.png)
+![Activity](images/ActivityDiagramUpdateSensorStatus.png)
