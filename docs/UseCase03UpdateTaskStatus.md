@@ -1,8 +1,8 @@
 [Go back](Index.md)
 
-# Check Task Status Use Case
+# Update Task Status Use Case
 ## Class diagram
-TODO
+![Domain model](images/ClassDiagramUpdateTaskStatus.png)
 
 ## Activity diagram
-TODO
+![Activity](images/ActivityDiagramUpdateTaskStatus.png)

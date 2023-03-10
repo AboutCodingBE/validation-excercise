@@ -1,0 +1,48 @@
+@startuml
+
+start
+
+:Find task by id;
+
+if (not found?) then (yes)
+  :Answer Task Not Found;
+  stop
+endif
+
+:Find sensor by id;
+
+if (not found?) then (yes)
+  :Answer Sensor Not Found;
+  stop
+endif
+
+:Fetch sensor information at the manufacturer;
+
+if (not found?) then (yes)
+  :Answer Sensor not known by manufacturer;
+  stop
+endif
+
+switch (Which status?)
+
+case (Cancelled)
+  :Notify Update Cancelled;
+
+case (Completed)
+  :Notify Updated;
+
+case (Error)
+  :Notify Failed;
+
+case (Default)
+   :Save task;
+   :Answer Done;
+   stop
+
+endswitch
+
+:Save sensor;
+:Save task;
+:Answer Done;
+stop
+@enduml

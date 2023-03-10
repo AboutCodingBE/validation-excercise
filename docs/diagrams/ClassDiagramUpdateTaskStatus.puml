@@ -2,23 +2,25 @@
 
 package application/usecase/sensor {
   class UpdateTaskStatusCommand {
-    -SensorId SensorId (1..1)
-    -TaskType taskType (1..1)
+    -SensorId sensorId (1..1)
+    -TaskId taskId (1..1)
   }
 
   class UpdateTaskStatusUseCase {
-    -SensorRepository sensorRepository (1..1)
     -SensorManufacturerGateway sensorManufacturerGateway (1..1)
+    -SensorRepository sensorRepository (1..1)
     -TaskRepository taskRepository (1..1)
   }
 
   class UpdateTaskStatusUseCaseResult {
     -UpdateTaskStatusUseCaseResultCode code (1..1)
-    -TaskId taskId (0..1)
-    -String error (0..1)
+    -String errors (0..n)
   }
 
   enum UpdateTaskStatusUseCaseResultCode {
+    SENSOR_NOT_FOUND,
+    SENSOR_NOT_KNOWN_BY_MANUFACTURER,
+    TASK_NOT_FOUND,
     DONE,
     ERROR
   }
@@ -34,16 +36,21 @@ package application/port/sensor {
     interface SensorRepository
 }
 
+package application/port/task {
+    interface TaskRepository
+}
+
 package domain/sensor {
   class SensorId
 }
 
 package domain/task {
-  class TaskType
+  class TaskId
 }
 
 UpdateTaskStatusCommand o-up- SensorId
-UpdateTaskStatusCommand o-right- TaskType
+UpdateTaskStatusCommand o-up- TaskId
 UpdateTaskStatusUseCase o-up- SensorManufacturerGateway
 UpdateTaskStatusUseCase o-up- SensorRepository
+UpdateTaskStatusUseCase o-up- TaskRepository
 @enduml

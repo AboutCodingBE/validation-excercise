@@ -1,6 +1,6 @@
 [Go back](Index.md)
 
-# Check Sensor Status Use Case
+# Update Sensor Status Use Case
 ## Class diagram
 ![Domain model](images/ClassDiagramUpdateSensorStatus.png)
 
